@@ -10,36 +10,32 @@ An extension of the [swift argument parser](https://github.com/apple/swift-argum
 You should be familiar with at least the basics of the [swift argument parser](https://github.com/apple/swift-argument-parser) which this extends.
 Build up your command line executable as you normally would when working with the swift argument parser with one exception which is how you start the executable. Once you have your exeutable ready that is where this library comes in to enable config files.
 
-The type that enables the use of config files is `ConfigArgumentParser<RootCommand, Interpreter>`.
+The type that enables the use of config files is `ConfigExecutable<RootCommand>`.
 The `RootCommand` is your executable command type that you would normally call `RootCommand.main()` on.
-The `Interpreter` is a type responsible for parsing the given config file format to create the arguments list to pass to the `RootCommand`. 
-A few common specializations of `ConfigArgumentParser` have been created that only need you to provide the `RootCommand` as they provide the `Interpreter`, these are shared below.
+With your `ConfigExecutable` you can then build up your command and customize how the config file is interpreted or what flags are used to supply a config file as needed.
 
-So pick how you are going to interpret your config files and then use code like this to start your executable:
-
+### The simple case
+In the most simple case this is all you need:
 ```swift
-SpecializedConfigArgumentParser<AwesomeExecutable>.main()
+ConfigExecutable<YourCommand>.main()
 ```
 
-If you need to support a custom config file format then you will need to do this instead:
-
+### Customizing the config file
+When you need to customize how the config file is interpreted and converted to the arguments your command expects you create a `ConfigFileInterpreter` type and then use `interpretConfig(with:)` like this:
 ```swift
-enum AwesomeExecutableConfigFileInterpreter: ConfigFileInterpreter {
-    // Implementation here
-    ...
-}
-
-ConfigArgumentParser<AwesomeExecutable, AwesomeExecutableConfigFileInterpreter>.main()
+ConfigExecutable<YourCommand>
+    .interpretConfig(with: YourConfigFileInterpreter.self)
+    .main()
 ```
 
-### Specialized `ConfigArgumentParser` types
-**Note these are not subclasses**</br>
-These exist for common formats that can be used for config files.
-
-| Specialization Type | Description |
-|---|---|
-| `NewLineConfigArgumentParser` | Each argument is on a new line of the config file. |
-| `SpaceConfigArgumentParser`   | Each argument is seperated by a space in the config file.  |
+### Customizing the flags
+When the default flags of `--config [config_file_path]` and `--config-dry-run` aren't what you want you can create a `ConfigFlagSettings` type and use `customizeFlags(with:)` to change them as needed like this:
+```swift
+ConfigExecutable<YourCommand>
+    .interpretConfig(with: YourConfigFileInterpreter.self) // If desired, this is not required
+    .customizeFlags(with: YourConfigFlagSettings.self)
+    .main()
+```
 
 ## Adding `ConfigArgumentParser` as a dependency
 Add the following line to your package dependencies in your `Package.swift` file:
@@ -51,6 +47,9 @@ Then in the targets section add this line as a dependency in your `Package.swift
 ```swift
 .product(name: "ConfigArgumentParser", package: "ConfigArgumentParser"),
 ```
+
+Because Swift Argument Parser is not stable yet this project is using `.upToNextMinor(from: "0.3.1")` for that dependency in order to stay compatible.
+
 Breaking changes will happen on minor versions until version `1.0.0` is reached.
 
 ## Known Issues
