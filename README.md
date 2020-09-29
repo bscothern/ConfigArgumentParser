@@ -4,7 +4,7 @@ An extension of the [swift argument parser](https://github.com/apple/swift-argum
 
 ![GitHub license](https://img.shields.io/badge/license-MIT-lightgrey.svg)
 ![SwiftPM](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg)
-![Swift Versions](https://img.shields.io/badge/Swift-5.2, 5.3-orange.svg)
+![Swift Versions](https://img.shields.io/badge/Swift-5.2,_5.3-orange.svg)
 
 ## Usage
 You should be familiar with at least the basics of the [swift argument parser](https://github.com/apple/swift-argument-parser) which this extends.
