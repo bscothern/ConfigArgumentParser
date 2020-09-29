@@ -23,7 +23,9 @@ let package = Package(
         ),
         .testTarget(
             name: "ConfigArgumentParserTests",
-            dependencies: ["ConfigArgumentParser"]
+            dependencies: [
+                .target(name: "ConfigArgumentParser"),
+            ]
         ),
     ]
 )

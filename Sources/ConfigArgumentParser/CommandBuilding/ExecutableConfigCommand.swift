@@ -42,4 +42,23 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
             RootCommand.main(arguments)
         }
     }
+    
+    @usableFromInline
+    static func main() {
+        do {
+            var subcommand = try RootCommand.parseAsRoot()
+            do {
+                try subcommand.run()
+            } catch {
+                RootCommand.exit(withError: error)
+            }
+        } catch let subcommandError {
+            do {
+                var command = try Self.parseAsRoot()
+                try command.run()
+            } catch {
+                RootCommand.exit(withError: subcommandError)
+            }
+        }
+    }
 }

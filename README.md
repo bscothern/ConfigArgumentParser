@@ -37,6 +37,8 @@ ConfigExecutable<YourCommand>
     .main()
 ```
 
+There are example executables that are also used for testing in the `Executables/`.
+
 ## Adding `ConfigArgumentParser` as a dependency
 Add the following line to your package dependencies in your `Package.swift` file:
 ```swift
