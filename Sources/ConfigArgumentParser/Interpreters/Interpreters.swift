@@ -8,5 +8,5 @@
 
 public enum Interpreters {
     @usableFromInline
-    static var `default`: ConfigFileInterpreter.Type { newLine }
+    static var `default`: ConfigFileInterpreter.Type { optionPerLine }
 }

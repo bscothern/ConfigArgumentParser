@@ -14,7 +14,7 @@ enum InterpretedConfigExecutable<RootCommand, Interpreter> where RootCommand: Pa
 extension InterpretedConfigExecutable: ConfigFlagCustomizable {
     @usableFromInline
     static func customizeFlags(with flagSettings: ConfigFlagSettings.Type) -> ExecutableEntryPoint.Type {
-        fatalError("TODO")
+        flagSettings.bind(to: RootCommand.self, Interpreter.self)
     }
 }
 

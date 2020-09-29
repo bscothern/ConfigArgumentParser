@@ -8,6 +8,7 @@
 
 import ArgumentParser
 
+/// A type that defines the flags used by an `ExecutableEntryPoint` so it knows how to identify a config file or a dry run of a config file.
 public protocol ConfigFlagSettings {
     /// The long flag that should be used to pass in a config file for this executable.
     ///

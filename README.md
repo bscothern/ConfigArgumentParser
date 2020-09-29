@@ -25,7 +25,7 @@ If you need to support a custom config file format then you will need to do this
 
 ```swift
 enum AwesomeExecutableConfigFileInterpreter: ConfigFileInterpreter {
-    // Implimentation here
+    // Implementation here
     ...
 }
 

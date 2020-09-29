@@ -6,15 +6,13 @@
 //  Copyright © 2020 Braden Scothern. All rights reserved.
 //
 
-import ArgumentParser
-
 @usableFromInline
 enum NewLineConfigFileInterpreter: ConfigFileInterpreter {
     @usableFromInline
-    static func convertToArguments(configFileContents: String) -> [String] {
+    static func convertToArguments(configFileContents: String) -> [Argument] {
         configFileContents
             .split(separator: "\n")
-            .map(String.init)
+            .map(Argument.init)
     }
 }
 

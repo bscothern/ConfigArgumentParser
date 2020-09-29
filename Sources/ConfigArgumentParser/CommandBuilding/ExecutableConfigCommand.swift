@@ -11,7 +11,7 @@ import Foundation
 
 /// The `ParsableCommand` that attempts to interpret a given config file and run the provided command.
 @usableFromInline
-struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand where RootCommand: ParsableCommand, Flags: ConfigFlagSettings, Interpreter: ConfigFileInterpreter {
+struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand, ExecutableEntryPoint where RootCommand: ParsableCommand, Flags: ConfigFlagSettings, Interpreter: ConfigFileInterpreter {
     @usableFromInline
     @Option(
         name: .customLong(Flags.config),
