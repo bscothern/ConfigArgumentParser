@@ -44,14 +44,14 @@ These exist for common formats that can be used for config files.
 ## Adding `ConfigArgumentParser` as a dependency
 Add the following line to your package dependencies in your `Package.swift` file:
 ```swift
-.package(url: "https://github.com/bscothern/ConfigArgumentParser", from: "1.0.0"),
+.package(url: "https://github.com/bscothern/ConfigArgumentParser", .upToNextMinor(from: "0.1.0")),
 ```
 
 Then in the targets section add this line as a dependency in your `Package.swift` file:
 ```swift
 .product(name: "ConfigArgumentParser", package: "ConfigArgumentParser"),
 ```
-
+Breaking changes will happen on minor versions until version `1.0.0` is reached.
 
 ## Known Issues
 * Because of how `ConfigArgumentParser` has to function to allow normal usage of your commands and the config options you can't have any help messages or auto complete help with supplying the arguments it supports.

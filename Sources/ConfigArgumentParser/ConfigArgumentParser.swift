@@ -22,7 +22,7 @@ import ArgumentParser
 ///
 /// - Warning:
 ///     Because of how arguments need to be parsed in order for your `RootCommand` you should avoid the flags added by the `ConfigArgumentParser` being a part of your `RootCommand`.
-public enum ConfigArgumentParser<RootCommand, Interpreter> where RootCommand: ParsableCommand, Interpreter: ConfigFileInterpreter {
+public struct ConfigArgumentParser<RootCommand, FileInterpreter> where RootCommand: ParsableCommand, FileInterpreter: ConfigFileInterpreter {
     /// Parse the arguments given to the executable and attempt to start the `RootCommand` if directly called otherwise attempt to find a config and execute it instead.
     @inlinable
     public static func main() {
@@ -35,11 +35,26 @@ public enum ConfigArgumentParser<RootCommand, Interpreter> where RootCommand: Pa
             }
         } catch let subcommandError {
             do {
-                var command = try ConfigCommand<RootCommand, Interpreter>.parseAsRoot()
-                try command.run()
+//                var command = try ExecutableConfigCommand<RootCommand, FileInterpreter>.parseAsRoot()
+//                try command.run()
             } catch {
                 RootCommand.exit(withError: subcommandError)
             }
         }
     }
+
+    init() {}
+
+    init(_ rootCommand: RootCommand.Type, _ fileInterpreter: FileInterpreter.Type) {}
 }
+
+//struct _ConfigArgumentParser<RootCommand> where RootCommand: ParsableCommand {
+//    static func interpreter<FileInterpreter>(_ interpreter: Interpreter) -> ConfigArgumentParser<RootCommand, FileInterpreter>.Type where FileInterpreter: ConfigFileInterpreter {
+//        type(of: ConfigArgumentParser(RootCommand.self, interpreter.value as! FileInterpreter.Type))
+//    }
+//}
+//
+//ConfigExecutable<RootCommand>
+//    .interpretConfig(with: Interpreter())
+//    .customizeFlags(with: FlagSettings)
+//    .main()

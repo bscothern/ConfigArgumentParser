@@ -8,16 +8,6 @@
 
 import ArgumentParser
 
-/// A type that can be executed with a config file with arguments seperated by new line or directly calling the `RootCommand` and its subcommands directly.
-///
-/// - Note: See `ConfigArgumentParser` for more details.
-public enum NewLineConfigArgumentParser<RootCommand> where RootCommand: ParsableCommand {
-    @inlinable
-    public static func main() {
-        ConfigArgumentParser<RootCommand, NewLineConfigFileInterpreter>.main()
-    }
-}
-
 @usableFromInline
 enum NewLineConfigFileInterpreter: ConfigFileInterpreter {
     @usableFromInline
@@ -26,4 +16,9 @@ enum NewLineConfigFileInterpreter: ConfigFileInterpreter {
             .split(separator: "\n")
             .map(String.init)
     }
+}
+
+extension Interpreters {
+    @inlinable
+    public static var newLine: ConfigFileInterpreter.Type { NewLineConfigFileInterpreter.self }
 }
