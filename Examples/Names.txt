@@ -1,4 +1,19 @@
+// The example modules that should be compiled and tested.
+// Comments all start with a // on the line and cannot have spaced before hand.
+// New lines are also ignored.
+
+// No changed settings
+ExampleDefault
+
+// Only changing the custom flags
 ExampleCustomFlags1
 ExampleCustomFlags2
 ExampleCustomFlags3
-ExampleDefault
+
+// Only changing the interpreter to the specified one
+ExampleNewLineConfigFileInterpreter
+ExampleOptionPerLineConfigArgumentInterpreter
+ExampleSpaceConfigFileInterpreter
+
+// Testing both a change to the flags and interpreter
+ExampleAllCustom

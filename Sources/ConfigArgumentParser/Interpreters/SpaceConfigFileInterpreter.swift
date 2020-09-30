@@ -1,5 +1,5 @@
 //
-//  SpaceConfigArgumentParser.swift
+//  SpaceConfigFileInterpreter.swift
 //  ConfigArgumentParser
 //
 //  Created by Braden Scothern on 9/9/20.
@@ -9,10 +9,10 @@
 @usableFromInline
 enum SpaceConfigFileInterpreter: ConfigFileInterpreter {
     @usableFromInline
-    static func convertToArguments(configFileContents: String) -> [Argument] {
+    static func convertToArguments(configFileContents: String) -> [ConfigArgument] {
         configFileContents
             .split(separator: " ")
-            .map(Argument.init)
+            .map(ConfigArgument.init)
     }
 }
 

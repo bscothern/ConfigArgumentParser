@@ -1,5 +1,5 @@
 //
-//  NewLineConfigArgumentParser.swift
+//  NewLineConfigFileInterpreter.swift
 //  ConfigArgumentParser
 //
 //  Created by Braden Scothern on 8/29/20.
@@ -9,10 +9,10 @@
 @usableFromInline
 enum NewLineConfigFileInterpreter: ConfigFileInterpreter {
     @usableFromInline
-    static func convertToArguments(configFileContents: String) -> [Argument] {
+    static func convertToArguments(configFileContents: String) -> [ConfigArgument] {
         configFileContents
             .split(separator: "\n")
-            .map(Argument.init)
+            .map(ConfigArgument.init)
     }
 }
 
