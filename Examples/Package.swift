@@ -39,6 +39,6 @@ let package = Package(
      dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMinor(from: "0.3.1")),
         .package(name: "ConfigArgumentParser", path: ".."),
-    ],
+     ],
      targets: targets
 )

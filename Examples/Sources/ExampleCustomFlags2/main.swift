@@ -12,7 +12,7 @@ import ConfigArgumentParser
 struct ExampleCustomFlags2: ParsableCommand {
     @Argument
     var values: [Int]
-    
+
     mutating func run() {
         print("=== ExampleCustomFlags2 ===")
         print(values)

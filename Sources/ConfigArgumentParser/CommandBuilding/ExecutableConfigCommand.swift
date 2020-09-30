@@ -42,7 +42,7 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
             RootCommand.main(arguments)
         }
     }
-    
+
     @usableFromInline
     static func main() {
         do {

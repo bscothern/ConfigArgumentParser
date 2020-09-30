@@ -12,10 +12,10 @@ import ConfigArgumentParser
 struct ExampleOptionPerLineConfigArgumentInterpreter: ParsableCommand {
     @Option
     var times = 1
-    
+
     @Argument
     var values: [Int]
-    
+
     mutating func run() {
         print("=== ExampleOptionPerLineConfigArgumentInterpreter ===")
         for _ in 0..<times {

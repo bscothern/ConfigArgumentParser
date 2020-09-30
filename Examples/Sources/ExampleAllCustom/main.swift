@@ -15,7 +15,7 @@ struct ExampleAllCustom: ParsableCommand {
 
     @Argument
     var values: [Int]
-    
+
     mutating func run() {
         print("=== ExampleAllCustom ===")
         for _ in 0..<times {

@@ -12,7 +12,7 @@ import ConfigArgumentParser
 struct ExampleDefault: ParsableCommand {
     @Argument
     var values: [Int]
-    
+
     mutating func run() {
         print("=== ExampleDefault ===")
         print(values)

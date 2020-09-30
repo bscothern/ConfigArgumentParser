@@ -1,6 +1,7 @@
 included:
     - ./Sources
     - ./Tests
+    - ./Examples
 
 opt_in_rules:
     - anyobject_protocol
