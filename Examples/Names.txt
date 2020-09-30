@@ -1,0 +1,4 @@
+ExampleCustomFlags1
+ExampleCustomFlags2
+ExampleCustomFlags3
+ExampleDefault
