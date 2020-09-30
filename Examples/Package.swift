@@ -12,7 +12,9 @@ let names: Array = try! String(contentsOfFile: namesPath)
     .lazy
     // Filter out comments as denoted by a starting // which should never be used as a path anyways
     .filter { !$0.hasPrefix("//") }
-    .map(String.init)
+    .map { line in
+        String(line.split(separator: ",").first!)
+    }
 
 let products = names.map { name -> Product in
     .executable(
