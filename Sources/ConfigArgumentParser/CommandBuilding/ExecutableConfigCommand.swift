@@ -32,8 +32,11 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
 
     @usableFromInline
     mutating func run() throws {
-        guard let contents = try? String(contentsOfFile: configFile) else {
+        guard var contents = try? String(contentsOfFile: configFile) else {
             Self.exit(withError: ConfigArgumentParserError.unableToFindConfig(file: configFile))
+        }
+        if Interpreter.stripConfigFileTrailingNewLine && contents.last == "\n" {
+            contents = String(contents.dropLast())
         }
         let arguments = try Interpreter.convertToArguments(configFileContents: contents)
         if dryRun {

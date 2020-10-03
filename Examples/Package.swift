@@ -3,18 +3,17 @@
 
 import PackageDescription
 
-/// The source of truth of all examples that should be built.
-let namesPath = "/" + #file.split(separator: "/").dropLast().joined(separator: "/") + "/Names.txt"
-
 /// The names of the example projects to make with default settings
-let names: Array = try! String(contentsOfFile: namesPath)
-    .split(separator: "\n")
-    .lazy
-    // Filter out comments as denoted by a starting // which should never be used as a path anyways
-    .filter { !$0.hasPrefix("//") }
-    .map { line in
-        String(line.split(separator: ",").first!)
-    }
+let names = [
+    "ExampleDefault",
+    "ExampleCustomFlags1",
+    "ExampleCustomFlags2",
+    "ExampleCustomFlags3",
+    "ExampleNewLineConfigFileInterpreter",
+    "ExampleOptionPerLineConfigArgumentInterpreter",
+    "ExampleSpaceConfigFileInterpreter",
+    "ExampleAllCustom",
+]
 
 let products = names.map { name -> Product in
     .executable(

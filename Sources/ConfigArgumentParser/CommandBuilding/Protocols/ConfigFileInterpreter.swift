@@ -18,8 +18,20 @@ public protocol ConfigFileInterpreter {
     /// - Parameter configFileContents: The contents of the specified config file that need to be converted to arguments.
     /// - Returns: An array of arguments that will be passed as the arguments to the root command of a `ConfigArgumentParser` as if they were passed in on the command line.
     static func convertToArguments(configFileContents: String) throws -> [ConfigArgument]
+    
+    /// Determines if a `\n` as the last character of the config file should be stripped before being passed to `convertToArguments(configFileContents:)`.
+    ///
+    /// This defaults to `true` which will remove the dangling new line since it is automatically added by many editors but is obnoxious for breaking down and interpreting config files that aren't based on new lines.
+    static var stripConfigFileTrailingNewLine: Bool { get }
 }
 
+// MARK: - Customization Points
+extension ConfigFileInterpreter {
+    @inlinable
+    public static var stripConfigFileTrailingNewLine: Bool { true }
+}
+
+// MARK: - Internal helpers
 extension ConfigFileInterpreter {
     /// A helper function to create an Interpreter type with a specified `RootCommand`.
     ///
