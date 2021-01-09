@@ -14,7 +14,7 @@ public protocol ConfigFlagSettings {
     ///
     /// - Note: This defaults to `"config"`
     static var config: String { get }
-    
+
     /// The help message that should be attached to the config flag.
     static var configHelp: String { get }
 
@@ -24,7 +24,7 @@ public protocol ConfigFlagSettings {
     ///
     /// - Note: This defaults to `"\(self.config)-dry-run"`
     static var dryRun: String { get }
-    
+
     /// The help message that should be attached to the dryRun flag.
     static var dryRunHelp: String { get }
 }

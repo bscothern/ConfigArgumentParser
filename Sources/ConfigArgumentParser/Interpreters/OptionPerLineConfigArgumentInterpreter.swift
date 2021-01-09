@@ -17,7 +17,7 @@ enum OptionPerLineConfigArgumentInterpreter: ConfigFileInterpreter {
             .flatMap { $0.split(separator: " ", maxSplits: 1) }
             .map(ConfigArgument.init)
     }
-    
+
     @usableFromInline
     static let configFileHelp: String = "The config file should be formatted with each option and its arguments on their own line."
 }

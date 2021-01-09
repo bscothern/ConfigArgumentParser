@@ -14,7 +14,7 @@ enum SpaceConfigFileInterpreter: ConfigFileInterpreter {
             .split(separator: " ")
             .map(ConfigArgument.init)
     }
-    
+
     @usableFromInline
     static let configFileHelp: String = "The config file should be formatted with each argument seperated by a space."
 }

@@ -33,7 +33,7 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
         help: ArgumentHelp(Flags.dryRunHelp)
     )
     var dryRun: Bool = false
-    
+
     @Argument
     var otherArguments: [String] = []
 
@@ -77,7 +77,7 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
             }
         }
     }
-    
+
     static func printConfigFileHelpMessageIfNeeded() {
         // Check if we are using this syntax: command subcommand [...] --help
         if CommandLine.arguments.contains("--help") {
@@ -99,7 +99,7 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
 
         /// This values comes from HelpGenerator.labelColumnWidth
         let labelColumnWidth = 26
-        
+
         var configHelp = "  --\(Flags.config) <\(Flags.config)>"
         if configHelp.count >= labelColumnWidth {
             configHelp += "\n"
@@ -126,12 +126,12 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
 
         executableConfigCommandHelpContext = .allocate(capacity: 1)
         executableConfigCommandHelpContext.initialize(
-            to:.init(
+            to: .init(
                 hasSubcomands: !RootCommand.configuration.subcommands.isEmpty,
                 message: "\(configHelp)\n\(dryRunHelp)"
             )
         )
-        
+
         // We need to register this to actually do the printing of our help because the printing of help is handled by a RootCommand.exit(withError:)
         // where the error data provided to the function has the help message.
         atexit {

@@ -29,14 +29,14 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
             } else {
                 dryRun = "\(config)-dry-run"
             }
-            
+
             let otherArguments: String
             if argumentSplit.count == 2 {
                 otherArguments = String(argumentSplit[1])
             } else {
                 otherArguments = ""
             }
-            
+
             return (name, config, dryRun, otherArguments)
         }
         .sorted { $0.name < $1.name }
@@ -77,10 +77,10 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
         let buildExitCode = simpleShell("swift build --product \(example)")
         XCTAssertEqual(buildExitCode, 0, "Build didn't end with exit code 0.")
     }
-    
+
     func run(example: String, config: String, dryRyn: String, configs: (good: String, bad: String), otherArguments: String) throws {
         try moveToExamplesDirectory(currentExample: example)
-        
+
         let dryRunGoodExitCode = simpleShell("swift run \(example) --\(dryRyn) --\(config) \(configs.good) \(otherArguments)")
         XCTAssertEqual(dryRunGoodExitCode, 0, "Dry run with good config didn't end with exit code 0.")
         let goodExitCode = simpleShell("swift run \(example) --\(config) \(configs.good)")
