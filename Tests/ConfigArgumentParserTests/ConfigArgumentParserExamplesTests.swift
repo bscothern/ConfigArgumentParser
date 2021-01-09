@@ -7,12 +7,13 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
     static let namesPath = packageRoot + "Examples/Names.txt"
 
     // The examples that need to be processed along with their config and dry run settings.
-    let examples: [(name: String, config: String, dryRun: String)] = try! String(contentsOfFile: ConfigArgumentParserExamplesTests.namesPath)
+    let examples: [(name: String, config: String, dryRun: String, otherArguments: String)] = try! String(contentsOfFile: ConfigArgumentParserExamplesTests.namesPath)
         .split(separator: "\n")
         .lazy
         .filter { !$0.hasPrefix("//") }
         .map { line in
-            let components = line.split(separator: ",", omittingEmptySubsequences: false).map(String.init)
+            let argumentSplit = line.split(separator: "|", maxSplits: 1)
+            let components = argumentSplit[0].split(separator: ",", omittingEmptySubsequences: false).map(String.init)
             let name = components[0]
             let config: String
             let dryRun: String
@@ -28,7 +29,15 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
             } else {
                 dryRun = "\(config)-dry-run"
             }
-            return (name, config, dryRun)
+            
+            let otherArguments: String
+            if argumentSplit.count == 2 {
+                otherArguments = String(argumentSplit[1])
+            } else {
+                otherArguments = ""
+            }
+            
+            return (name, config, dryRun, otherArguments)
         }
         .sorted { $0.name < $1.name }
 
@@ -47,14 +56,14 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
 
     func testAllExamples() throws {
         print()
-        try examples.forEach(runExample(name:config:dryRun:))
+        try examples.forEach(runExample(name:config:dryRun:otherArguments:))
     }
 
-    func runExample(name: String, config: String, dryRun: String) throws {
+    func runExample(name: String, config: String, dryRun: String, otherArguments: String) throws {
         print("===== TEST: \(name) =====")
         try build(example: name)
         let configs = try configFilePaths(for: name)
-        try run(example: name, config: config, dryRyn: dryRun, configs: configs)
+        try run(example: name, config: config, dryRyn: dryRun, configs: configs, otherArguments: otherArguments)
         print()
     }
 
@@ -69,15 +78,15 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
         XCTAssertEqual(buildExitCode, 0, "Build didn't end with exit code 0.")
     }
     
-    func run(example: String, config: String, dryRyn: String, configs: (good: String, bad: String)) throws {
+    func run(example: String, config: String, dryRyn: String, configs: (good: String, bad: String), otherArguments: String) throws {
         try moveToExamplesDirectory(currentExample: example)
         
-        let dryRunGoodExitCode = simpleShell("swift run \(example) --\(dryRyn) --\(config) \(configs.good)")
+        let dryRunGoodExitCode = simpleShell("swift run \(example) --\(dryRyn) --\(config) \(configs.good) \(otherArguments)")
         XCTAssertEqual(dryRunGoodExitCode, 0, "Dry run with good config didn't end with exit code 0.")
         let goodExitCode = simpleShell("swift run \(example) --\(config) \(configs.good)")
         XCTAssertEqual(goodExitCode, 0, "Run with good config didn't end with exit code 0.")
 
-        let dryRunBadExitCode = simpleShell("swift run \(example) --\(dryRyn) --\(config) \(configs.bad)")
+        let dryRunBadExitCode = simpleShell("swift run \(example) --\(dryRyn) --\(config) \(configs.bad) \(otherArguments)")
         XCTAssertEqual(dryRunBadExitCode, 0, "Dry run with bad config didn't end with exit code 0.")
         let badExitCode = simpleShell("swift run \(example) --\(config) \(configs.bad)")
         XCTAssertNotEqual(badExitCode, 0, "Run with bad config ended with exit code 0.")

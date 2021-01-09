@@ -14,6 +14,9 @@ enum NewLineConfigFileInterpreter: ConfigFileInterpreter {
             .split(separator: "\n")
             .map(ConfigArgument.init)
     }
+    
+    @usableFromInline
+    static let configFileHelp: String = "The config file should be formatted with each argument on its own line."
 }
 
 extension Interpreters {

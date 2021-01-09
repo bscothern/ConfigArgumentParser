@@ -13,6 +13,7 @@ let names = [
     "ExampleOptionPerLineConfigArgumentInterpreter",
     "ExampleSpaceConfigFileInterpreter",
     "ExampleAllCustom",
+    "ExampleCLIOverride",
 ]
 
 let products = names.map { name -> Product in

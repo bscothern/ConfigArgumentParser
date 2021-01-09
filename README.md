@@ -55,5 +55,6 @@ Because Swift Argument Parser is not stable yet this project is using `.upToNext
 Breaking changes will happen on minor versions until version `1.0.0` is reached.
 
 ## Known Issues
-* Because of how `ConfigArgumentParser` has to function to allow normal usage of your commands and the config options you can't have any help messages or auto complete help with supplying the arguments it supports.
-  This means just the `RootCommand` and its subcommands help and autocomplete is available making `--config` and `--config-dry-run` magic hidden commands.
+* Because of how `ConfigArgumentParser` has to function to allow normal usage of your commands and the config options you can't have any auto complete help with supplying the arguments it supports.
+* You cannot override config settings from the command line
+* You cannot add aditional settings from the command line when a config file is used.
