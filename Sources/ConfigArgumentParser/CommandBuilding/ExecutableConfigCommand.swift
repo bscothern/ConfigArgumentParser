@@ -95,6 +95,8 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
                     return
                 }
             }
+        } else {
+            return
         }
 
         /// This values comes from HelpGenerator.labelColumnWidth
