@@ -25,7 +25,7 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
         help: ArgumentHelp(Flags.autoConfigHelp)
     )
     var autoConfig: Bool = false
-    
+
     @usableFromInline
     @Flag(
         name: .customLong(Flags.showAutoConfigFile),

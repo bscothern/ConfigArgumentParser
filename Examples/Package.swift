@@ -40,7 +40,7 @@ let package = Package(
     ],
     products: products,
      dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMinor(from: "0.3.1")),
+        .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMinor(from: "0.4.3")),
         .package(name: "ConfigArgumentParser", path: ".."),
      ],
      targets: targets

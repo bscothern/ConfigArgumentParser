@@ -25,6 +25,8 @@ struct ExampleAllCustom: ParsableCommand {
 }
 
 enum CommaSeperatedConfigFileInterpreter: ConfigFileInterpreter {
+    static var configFileHelp: String { "\(#function) help "}
+
     static func convertToArguments(configFileContents: String) -> [ConfigArgument] {
         configFileContents
             .split(separator: ",")

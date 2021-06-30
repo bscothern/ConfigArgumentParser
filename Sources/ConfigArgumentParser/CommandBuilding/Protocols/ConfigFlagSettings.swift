@@ -58,6 +58,9 @@ public protocol ConfigFlagSettings {
 
 extension ConfigFlagSettings {
     @inlinable
+    public static var autoConfigPaths: [String] { [] }
+
+    @inlinable
     public static var autoConfig: String { "auto-config" }
     
     @inlinable
