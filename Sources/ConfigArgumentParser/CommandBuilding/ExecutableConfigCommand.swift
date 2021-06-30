@@ -3,7 +3,7 @@
 //  ConfigArgumentParser
 //
 //  Created by Braden Scothern on 8/29/20.
-//  Copyright © 2020 Braden Scothern. All rights reserved.
+//  Copyright © 2020-2021 Braden Scothern. All rights reserved.
 //
 
 import ArgumentParser
@@ -20,12 +20,26 @@ struct ExecutableConfigCommandHelpContext {
 @usableFromInline
 struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand, ExecutableEntryPoint where RootCommand: ParsableCommand, Flags: ConfigFlagSettings, Interpreter: ConfigFileInterpreter {
     @usableFromInline
+    @Flag(
+        name: .customLong(Flags.autoConfig),
+        help: ArgumentHelp(Flags.autoConfigHelp)
+    )
+    var autoConfig: Bool = false
+    
+    @usableFromInline
+    @Flag(
+        name: .customLong(Flags.showAutoConfigFile),
+        help: ArgumentHelp(Flags.showAutoConfigFileHelp)
+    )
+    var showAutoConfigFile: Bool = false
+
+    @usableFromInline
     @Option(
         name: .customLong(Flags.config),
         help: ArgumentHelp(Flags.configHelp),
         completion: CompletionKind.file()
     )
-    var configFile: String
+    var configFile: String?
 
     @usableFromInline
     @Flag(
@@ -42,13 +56,42 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
 
     @usableFromInline
     mutating func run() throws {
-        guard var contents = try? String(contentsOfFile: configFile) else {
-            Self.exit(withError: ConfigArgumentParserError.unableToFindConfig(file: configFile))
+        if let configFile = configFile {
+            guard let contents = try? String(contentsOfFile: configFile) else {
+                Self.exit(withError: ConfigArgumentParserError.unableToFindConfig(file: configFile))
+            }
+            try run(with: contents)
+        } else {
+            guard let config = Flags.autoConfigPaths.lazy.compactMap({ (file: String) -> (file: String, contents: String)? in
+                var filePath = file
+                
+                // String.init(contentsOfFile:) doens't work with a path using ~ for home so replace it by looking it up before trying this config file path.
+                if filePath.hasPrefix("~") {
+                    let homeDirectory = FileManager.default.homeDirectoryForCurrentUser
+                    filePath = filePath.replacingOccurrences(of: "~", with: homeDirectory.path)
+                }
+                
+                guard let contents = try? String(contentsOfFile: filePath) else {
+                    return nil
+                }
+                return (file, contents)
+            }).first else {
+                Self.exit(withError: ConfigArgumentParserError.noConfigFilesInAutoPaths(Flags.autoConfigPaths))
+            }
+
+            if showAutoConfigFile {
+                print("Using Config File: \(config.file)")
+            }
+            try run(with: config.contents)
         }
-        if Interpreter.stripConfigFileTrailingNewLine && contents.last == "\n" {
-            contents = String(contents.dropLast())
+    }
+
+    mutating func run(with configContents: String) throws {
+        var configContents = configContents
+        if Interpreter.stripConfigFileTrailingNewLine && configContents.last == "\n" {
+            configContents = String(configContents.dropLast())
         }
-        let arguments = try Interpreter.convertToArguments(configFileContents: contents)
+        let arguments = try Interpreter.convertToArguments(configFileContents: configContents)
         if dryRun {
             print("\(RootCommand._commandName) \(arguments.joined(separator: " "))")
         } else {
@@ -99,38 +142,45 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
             return
         }
 
-        /// This values comes from HelpGenerator.labelColumnWidth
-        let labelColumnWidth = 26
+        func makeHelpProperLength(_ string: inout String) {
+            if string.count >= Constants.labelColumnWidth {
+                string += "\n"
+            }
+            if let lastLineCount = string.split(separator: "\n").last?.count,
+                lastLineCount < Constants.labelColumnWidth {
+                string += String(repeating: " ", count: Constants.labelColumnWidth - lastLineCount)
+            }
+        }
+
+        var message = ""
+        
+        if !Flags.autoConfigPaths.isEmpty {
+            var autoConfigHelp = "  --\(Flags.autoConfig)"
+            makeHelpProperLength(&autoConfigHelp)
+            autoConfigHelp += Flags.autoConfigHelp
+            message += "\n\(autoConfigHelp)"
+            
+            var showAutoConfigFileHelp = "  --\(Flags.showAutoConfigFile)"
+            makeHelpProperLength(&showAutoConfigFileHelp)
+            showAutoConfigFileHelp += Flags.showAutoConfigFileHelp
+            message += "\n\(showAutoConfigFileHelp)"
+        }
 
         var configHelp = "  --\(Flags.config) <\(Flags.config)>"
-        if configHelp.count >= labelColumnWidth {
-            configHelp += "\n"
-        }
-        if var configHelpLastLineCount = configHelp.split(separator: "\n").last?.count {
-            while configHelpLastLineCount < labelColumnWidth {
-                configHelp += " "
-                configHelpLastLineCount += 1
-            }
-        }
+        makeHelpProperLength(&configHelp)
         configHelp += "\(Flags.configHelp) \(Interpreter.configFileHelp)"
+        message += "\n\(configHelp)"
 
         var dryRunHelp = "  --\(Flags.dryRun)"
-        if dryRunHelp.count >= labelColumnWidth {
-            dryRunHelp += "\n"
-        }
-        if var dryRunHelpLineCount = dryRunHelp.split(separator: "\n").last?.count {
-            while dryRunHelpLineCount < labelColumnWidth {
-                dryRunHelp += " "
-                dryRunHelpLineCount += 1
-            }
-        }
+        makeHelpProperLength(&dryRunHelp)
         dryRunHelp += Flags.dryRunHelp
+        message += "\n\(dryRunHelp)"
 
         executableConfigCommandHelpContext = .allocate(capacity: 1)
         executableConfigCommandHelpContext.initialize(
             to: .init(
                 hasSubcomands: !RootCommand.configuration.subcommands.isEmpty,
-                message: "\(configHelp)\n\(dryRunHelp)"
+                message: String(message.dropFirst())
             )
         )
 

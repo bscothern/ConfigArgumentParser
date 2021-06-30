@@ -35,6 +35,9 @@ let targets = names.map { name -> Target in
 
 let package = Package(
     name: "ConfigArgumentParserExamples",
+    platforms: [
+        .macOS(.v10_12),
+    ],
     products: products,
      dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMinor(from: "0.3.1")),
