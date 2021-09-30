@@ -48,7 +48,7 @@ There are example executables that are also used for testing in the `Executables
 ## Adding `ConfigArgumentParser` as a dependency
 Add the following line to your package dependencies in your `Package.swift` file:
 ```swift
-.package(url: "https://github.com/bscothern/ConfigArgumentParser", .upToNextMinor(from: "0.1.2")),
+.package(url: "https://github.com/bscothern/ConfigArgumentParser", .upToNextMinor(from: "0.2.0")),
 ```
 
 Then in the targets section add this line as a dependency in your `Package.swift` file:
@@ -56,7 +56,7 @@ Then in the targets section add this line as a dependency in your `Package.swift
 .product(name: "ConfigArgumentParser", package: "ConfigArgumentParser"),
 ```
 
-Because Swift Argument Parser is not stable yet this project is using `.upToNextMinor(from: "0.3.1")` for that dependency in order to stay compatible.
+Because Swift Argument Parser is not stable yet this project is using `.upToNextMinor(from: "0.4.3")` for that dependency in order to stay compatible.
 
 Breaking changes will happen on minor versions until version `1.0.0` is reached.
 
