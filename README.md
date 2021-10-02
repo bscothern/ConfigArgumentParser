@@ -56,8 +56,6 @@ Then in the targets section add this line as a dependency in your `Package.swift
 .product(name: "ConfigArgumentParser", package: "ConfigArgumentParser"),
 ```
 
-Because Swift Argument Parser is not stable yet this project is using `.upToNextMinor(from: "0.4.3")` for that dependency in order to stay compatible.
-
 Breaking changes will happen on minor versions until version `1.0.0` is reached.
 
 ## Known Issues
