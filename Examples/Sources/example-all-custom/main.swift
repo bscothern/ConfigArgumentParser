@@ -35,6 +35,12 @@ enum CommaSeperatedConfigFileInterpreter: ConfigFileInterpreter {
 }
 
 enum FooBarFlagSettings: ConfigFlagSettings {
+    @usableFromInline
+    static var autoConfigPaths: [String] {
+        [
+            "./\(ExampleAllCustom._commandName).config"
+        ]
+    }
     static var config: String { "foo" }
     static var dryRun: String { "bar" }
 }
