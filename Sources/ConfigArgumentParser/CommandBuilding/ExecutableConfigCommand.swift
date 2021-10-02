@@ -34,6 +34,13 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
     var showAutoConfigFile = false
 
     @usableFromInline
+    @Flag(
+        name: .customLong(Flags.findAutoConfigFile),
+        help: ArgumentHelp(Flags.findAutoConfigFileHelp)
+    )
+    var findAutoConfigFile = false
+
+    @usableFromInline
     @Option(
         name: .customLong(Flags.config),
         help: ArgumentHelp(Flags.configHelp),
@@ -61,7 +68,7 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
                 Self.exit(withError: ConfigArgumentParserError.unableToFindConfig(file: configFile))
             }
             try run(with: contents)
-        } else {
+        } else if self.autoConfig {
             guard let config = Flags.autoConfigPaths.lazy.compactMap({ (file: String) -> (file: String, contents: String)? in
                 var filePath = file
 
@@ -80,7 +87,10 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
             }
 
             if showAutoConfigFile {
-                print("Using Config File: \(config.file)")
+                print("Config File: \(config.file)")
+                guard !findAutoConfigFile else {
+                    Self.exit(withError: CleanExit.message(""))
+                }
             }
             try run(with: config.contents)
         }
@@ -118,6 +128,14 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
             } catch {
                 Self.exit(withError: subcommandError)
             }
+        }
+    }
+
+    @usableFromInline
+    mutating func validate() throws {
+        if findAutoConfigFile {
+            self.autoConfig = true
+            self.showAutoConfigFile = true
         }
     }
 
@@ -164,6 +182,11 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
             makeHelpProperLength(&showAutoConfigFileHelp)
             showAutoConfigFileHelp += Flags.showAutoConfigFileHelp
             message += "\n\(showAutoConfigFileHelp)"
+
+            var findAutoConfigFileHelp = "  --\(Flags.findAutoConfigFile)"
+            makeHelpProperLength(&findAutoConfigFileHelp)
+            findAutoConfigFileHelp += Flags.findAutoConfigFileHelp
+            message += "\n\(findAutoConfigFileHelp)"
         }
 
         var configHelp = "  --\(Flags.config) <\(Flags.config)>"

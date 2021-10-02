@@ -26,23 +26,24 @@ let detailedExampleTestCases: [DetailedExampleTestCase] = [
 
 /// Defines all test cases that should be run with no additional arguments
 let simpleExampleTestCases: [SimpleExampleTestCase] = [
-    .init(name: "example-auto-config-good", isSuccessful: true),
-    .init(name: "example-auto-config-bad", isSuccessful: false),
+    .init(name: "example-auto-config-good", isSuccessful: true, arguments: ["--auto-config"]),
+    .init(name: "example-auto-config-bad", isSuccessful: false, arguments: ["--auto-config"]),
 ]
 
 protocol ExampleTestCase {
+    /// The name of the example to run.
     var name: String { get }
+    /// Other arguments to pass to the executable
+    var arguments: [String] { get }
 }
 
 struct DetailedExampleTestCase: ExampleTestCase {
-    /// The name of the example to run.
     var name: String
+    var arguments: [String]
     /// The name of the config flag for the executable.
     var config: String
     /// The name of the dry run flag for the executable.
     var dryRun: String
-    /// Other arguments to pass to the executable
-    var arguments: [String]
 
     init(name: String, config: String = "config", dryRun: String? = nil, arguments: [String] = []) {
         precondition(!name.isEmpty)
@@ -56,10 +57,16 @@ struct DetailedExampleTestCase: ExampleTestCase {
 }
 
 struct SimpleExampleTestCase: ExampleTestCase {
-    /// The name of the test case to just run.
     var name: String
+    var arguments: [String]
     /// If the example test case should work or not
     var isSuccessful: Bool
+
+    init(name: String, isSuccessful: Bool = true, arguments: [String]) {
+        self.name = name
+        self.isSuccessful = isSuccessful
+        self.arguments = arguments
+    }
 }
 
 final class ConfigArgumentParserExamplesTests: XCTestCase {
@@ -158,7 +165,7 @@ extension ConfigArgumentParserExamplesTests {
 
     func swiftpmRun(example: SimpleExampleTestCase) throws {
         try moveToExamplesDirectory(currentExample: example)
-        let simpleRunExitCode = simpleShell("swift run \(example.name)")
+        let simpleRunExitCode = simpleShell("swift run \(example.name) \(example.arguments.joined(separator: " "))")
 
         if example.isSuccessful {
             XCTAssertEqual(simpleRunExitCode, 0, "Simple run failed when it should have succeeded")

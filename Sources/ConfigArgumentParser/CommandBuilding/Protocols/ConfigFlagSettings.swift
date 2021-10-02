@@ -35,6 +35,14 @@ public protocol ConfigFlagSettings {
     /// The help message that should be attached to the `showAutoConfigFile` flag.
     static var showAutoConfigFileHelp: String { get }
 
+    /// The long flag that should be used to print which config file has been found by `autoConfig` and then exit.
+    ///
+    /// - Note: This defaults to `only-show-auto-config`
+    static var findAutoConfigFile: String { get }
+
+    /// The help message that should be attached to the `findAutoConfigFile` flag.
+    static var findAutoConfigFileHelp: String { get }
+
     /// The long flag that should be used to pass in a config file for this executable.
     ///
     /// If this is passed it will always take presidence over the `autoConfig` flag.
@@ -67,6 +75,9 @@ extension ConfigFlagSettings {
     public static var showAutoConfigFile: String { "show-auto-config" }
 
     @inlinable
+    public static var findAutoConfigFile: String { "find-auto-config" }
+
+    @inlinable
     public static var config: String { "config" }
 
     @inlinable
@@ -82,7 +93,10 @@ extension ConfigFlagSettings {
     }
 
     @inlinable
-    public static var showAutoConfigFileHelp: String { "If --\(Self.autoConfig) is set then print which auto config file was found and used." }
+    public static var showAutoConfigFileHelp: String { "If this flag is set then print which auto config file was found and used." }
+
+    @inlinable
+    public static var findAutoConfigFileHelp: String { "If this flag is set then print which auto config file was found and would be used if executed with --auto-config then exit with a success."}
 
     @inlinable
     public static var configHelp: String {
