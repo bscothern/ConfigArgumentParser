@@ -15,7 +15,7 @@ let names = [
     "example-all-custom",
     "example-auto-config-good",
     "example-auto-config-bad",
-    "example-cli-override"
+//    "example-cli-override", //(WIP)
 ]
 
 let products = names.map { name -> Product in

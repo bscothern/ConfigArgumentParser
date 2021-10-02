@@ -55,9 +55,6 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
     )
     var dryRun = false
 
-    @Argument
-    var otherArguments: [String] = []
-
     @usableFromInline
     init() {}
 
