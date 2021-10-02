@@ -1,0 +1,17 @@
+name: SwiftPM (Swift 5.5 & Ubuntu 20.04)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: swift build -v
+      - name: Run tests
+        run: swift test -v

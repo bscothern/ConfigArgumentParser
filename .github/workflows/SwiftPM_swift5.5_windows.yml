@@ -1,0 +1,21 @@
+name: SwiftPM (Swift 5.5 & Windows)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - use: compnerd/gha-setup-swift@main
+        with:
+          branch: swift-5.5-release
+          tag: 5.5-RELEASE
+
+      - uses: actions/checkout@v2
+      - run: swift build
+      - run: swift test
+

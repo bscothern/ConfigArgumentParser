@@ -1,4 +1,4 @@
-name: SwiftPM (Beta)
+name: SwiftPM (Xcode 13.0 & macOS 11)
 
 on:
   push:

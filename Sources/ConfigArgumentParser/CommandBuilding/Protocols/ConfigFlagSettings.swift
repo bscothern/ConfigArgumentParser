@@ -18,23 +18,23 @@ public protocol ConfigFlagSettings {
     ///
     /// - Note: This defaults to just the path: `./[EXECUTABLE_NAME].config`
     static var autoConfigPaths: [String] { get }
-    
+
     /// The long flag that should be used to enable the use of `configLookupPaths` on this run.
     ///
     /// - Note: This defaults to `auto-config`
     static var autoConfig: String { get }
-    
+
     /// The help message that should be attached to the `enableConfigLookup` flag.
     static var autoConfigHelp: String { get }
-    
+
     /// The long flag that should be used to print which config file has been found by `autoConfig`.
     ///
     /// - Note: This defaults to `show-auto-config`
     static var showAutoConfigFile: String { get }
-    
+
     /// The help message that should be attached to the `showAutoConfigFile` flag.
     static var showAutoConfigFileHelp: String { get }
-    
+
     /// The long flag that should be used to pass in a config file for this executable.
     ///
     /// If this is passed it will always take presidence over the `autoConfig` flag.
@@ -62,16 +62,16 @@ extension ConfigFlagSettings {
 
     @inlinable
     public static var autoConfig: String { "auto-config" }
-    
+
     @inlinable
     public static var showAutoConfigFile: String { "show-auto-config" }
-    
+
     @inlinable
     public static var config: String { "config" }
 
     @inlinable
     public static var dryRun: String { "\(config)-dry-run" }
-    
+
     @inlinable
     public static var autoConfigHelp: String {
         let helpIndentation = String(repeating: " ", count: Constants.labelColumnWidth)
@@ -80,7 +80,7 @@ extension ConfigFlagSettings {
         \(autoConfigPaths.map { "\(helpIndentation)  \($0)\n" }.joined().dropLast())
         """
     }
-    
+
     @inlinable
     public static var showAutoConfigFileHelp: String { "If --\(Self.autoConfig) is set then print which auto config file was found and used." }
 

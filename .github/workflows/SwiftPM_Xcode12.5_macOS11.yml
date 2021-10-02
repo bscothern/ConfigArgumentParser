@@ -1,4 +1,4 @@
-name: SwiftPM (macOS 10)
+name: SwiftPM (Xcode 12.5 & macOS 11)
 
 on:
   push:
@@ -8,9 +8,9 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-11
     env:
-        DEVELOPER_DIR: /Applications/Xcode_12.4.app/Contents/Developer
+        DEVELOPER_DIR: /Applications/Xcode_12.5.app/Contents/Developer
     steps:
       - uses: actions/checkout@v2
       - name: Build

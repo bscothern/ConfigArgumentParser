@@ -13,7 +13,7 @@ let names = [
     "ExampleOptionPerLineConfigArgumentInterpreter",
     "ExampleSpaceConfigFileInterpreter",
     "ExampleAllCustom",
-    "ExampleCLIOverride",
+    "ExampleCLIOverride"
 ]
 
 let products = names.map { name -> Product in
@@ -28,7 +28,7 @@ let targets = names.map { name -> Target in
         name: name,
         dependencies: [
             .product(name: "ArgumentParser", package: "swift-argument-parser"),
-            .product(name: "ConfigArgumentParser", package: "ConfigArgumentParser"),
+            .product(name: "ConfigArgumentParser", package: "ConfigArgumentParser")
         ]
     )
 }
@@ -36,12 +36,12 @@ let targets = names.map { name -> Target in
 let package = Package(
     name: "ConfigArgumentParserExamples",
     platforms: [
-        .macOS(.v10_12),
+        .macOS(.v10_12)
     ],
     products: products,
      dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMinor(from: "0.4.3")),
         .package(name: "ConfigArgumentParser", path: ".."),
+        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.0.1")
      ],
      targets: targets
 )

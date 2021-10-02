@@ -48,7 +48,7 @@ There are example executables that are also used for testing in the `Executables
 ## Adding `ConfigArgumentParser` as a dependency
 Add the following line to your package dependencies in your `Package.swift` file:
 ```swift
-.package(url: "https://github.com/bscothern/ConfigArgumentParser", .upToNextMinor(from: "0.2.0")),
+.package(url: "https://github.com/bscothern/ConfigArgumentParser", .upToNextMinor(from: "0.3.0")),
 ```
 
 Then in the targets section add this line as a dependency in your `Package.swift` file:

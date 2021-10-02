@@ -24,14 +24,14 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
         name: .customLong(Flags.autoConfig),
         help: ArgumentHelp(Flags.autoConfigHelp)
     )
-    var autoConfig: Bool = false
+    var autoConfig = false
 
     @usableFromInline
     @Flag(
         name: .customLong(Flags.showAutoConfigFile),
         help: ArgumentHelp(Flags.showAutoConfigFileHelp)
     )
-    var showAutoConfigFile: Bool = false
+    var showAutoConfigFile = false
 
     @usableFromInline
     @Option(
@@ -46,7 +46,7 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
         name: .customLong(Flags.dryRun),
         help: ArgumentHelp(Flags.dryRunHelp)
     )
-    var dryRun: Bool = false
+    var dryRun = false
 
     @Argument
     var otherArguments: [String] = []
@@ -64,13 +64,13 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
         } else {
             guard let config = Flags.autoConfigPaths.lazy.compactMap({ (file: String) -> (file: String, contents: String)? in
                 var filePath = file
-                
+
                 // String.init(contentsOfFile:) doens't work with a path using ~ for home so replace it by looking it up before trying this config file path.
                 if filePath.hasPrefix("~") {
                     let homeDirectory = FileManager.default.homeDirectoryForCurrentUser
                     filePath = filePath.replacingOccurrences(of: "~", with: homeDirectory.path)
                 }
-                
+
                 guard let contents = try? String(contentsOfFile: filePath) else {
                     return nil
                 }
@@ -153,13 +153,13 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
         }
 
         var message = ""
-        
+
         if !Flags.autoConfigPaths.isEmpty {
             var autoConfigHelp = "  --\(Flags.autoConfig)"
             makeHelpProperLength(&autoConfigHelp)
             autoConfigHelp += Flags.autoConfigHelp
             message += "\n\(autoConfigHelp)"
-            
+
             var showAutoConfigFileHelp = "  --\(Flags.showAutoConfigFile)"
             makeHelpProperLength(&showAutoConfigFileHelp)
             showAutoConfigFileHelp += Flags.showAutoConfigFileHelp
