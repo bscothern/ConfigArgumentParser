@@ -2,9 +2,11 @@ name: SwiftPM (Xcode 12.4 & macOS 10.15)
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - '*'
   pull_request:
-    branches: [ main ]
+    branches:
+      - '*'
 
 jobs:
   build:

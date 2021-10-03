@@ -103,8 +103,10 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
         process.executableURL = .init(fileURLWithPath: "/usr/bin/env")
         process.arguments = command.lazy.split(separator: " ").map(String.init)
         #else
+        process.executableURL = .init(fileURLWithPath: FilePath(#"C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin\swift"#).string)
+        process.arguments = command.lazy.dropFirst().split(separator: " ").map(String.init)
         #endif
-        
+
         try process.run()
         process.waitUntilExit()
         return process.terminationStatus
