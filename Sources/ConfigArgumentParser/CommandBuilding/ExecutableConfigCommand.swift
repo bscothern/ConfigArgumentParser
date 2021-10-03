@@ -47,7 +47,9 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
         help: ArgumentHelp(Flags.configHelp),
         completion: CompletionKind.file()
     )
-    var configFile: String?
+    var _configFile: String?
+    
+    var configFile: FilePath?
 
     @usableFromInline
     @Flag(
@@ -62,8 +64,8 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
     @usableFromInline
     mutating func run() throws {
         if let configFile = configFile {
-            guard let contents = try? String(contentsOfFile: configFile) else {
-                Self.exit(withError: ConfigArgumentParserError.unableToFindConfig(file: configFile))
+            guard let contents = try? String(contentsOfFile: configFile.string) else {
+                Self.exit(withError: ConfigArgumentParserError.unableToFindConfig(file: configFile.string))
             }
             try run(with: contents)
         } else if self.autoConfig {
@@ -137,6 +139,8 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
             self.autoConfig = true
             self.showAutoConfigFile = true
         }
+        
+        configFile = _configFile.map(FilePath.init(_:))
     }
 
     static func printConfigFileHelpMessageIfNeeded() {
