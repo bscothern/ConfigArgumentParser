@@ -2,9 +2,12 @@ name: SwiftPM (Swift 5.5 & Windows)
 
 on:
   push:
-    branches: [ main ]
+    branches: 
+      - main
+      - '*'
   pull_request:
-    branches: [ main ]
+    branches: 
+      - main
 
 jobs:
   windows:
