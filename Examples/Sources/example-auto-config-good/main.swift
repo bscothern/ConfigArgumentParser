@@ -8,6 +8,7 @@
 
 import ArgumentParser
 import ConfigArgumentParser
+import SystemPackage
 
 struct ExampleAutoConfigGood: ParsableCommand {
     @Argument
@@ -20,9 +21,9 @@ struct ExampleAutoConfigGood: ParsableCommand {
 }
 
 enum ExampleAutoConfigGoodFlagSettings: ConfigFlagSettings {
-    static var autoConfigPaths: [String] {
+    static var autoConfigPaths: [FilePath] {
         [
-            "Sources/\(ExampleAutoConfigGood._commandName)/\(ExampleAutoConfigGood._commandName).config"
+            .init("Sources/\(ExampleAutoConfigGood._commandName)/\(ExampleAutoConfigGood._commandName).config")
         ]
     }
 }

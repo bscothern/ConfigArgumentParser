@@ -7,13 +7,14 @@
 //
 
 import ArgumentParser
+import SystemPackage
 
 @usableFromInline
 enum DefaultConfigFlagSettings<RootCommand>: ConfigFlagSettings where RootCommand: ParsableCommand {
     @usableFromInline
-    static var autoConfigPaths: [String] {
+    static var autoConfigPaths: [FilePath] {
         [
-            "./\(RootCommand._commandName).config"
+            .init("./\(RootCommand._commandName).config")
         ]
     }
 }

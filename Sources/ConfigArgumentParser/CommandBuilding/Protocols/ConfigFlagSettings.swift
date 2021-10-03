@@ -7,6 +7,7 @@
 //
 
 import ArgumentParser
+import SystemPackage
 
 /// A type that defines the flags used by an `ExecutableEntryPoint` so it knows how to identify a config file or a dry run of a config file.
 public protocol ConfigFlagSettings {
@@ -17,7 +18,7 @@ public protocol ConfigFlagSettings {
     /// If you wish to disable this and related features then set this to an empty array.
     ///
     /// - Note: This defaults to just the path: `./[EXECUTABLE_NAME].config`
-    static var autoConfigPaths: [String] { get }
+    static var autoConfigPaths: [FilePath] { get }
 
     /// The long flag that should be used to enable the use of `configLookupPaths` on this run.
     ///
@@ -66,7 +67,7 @@ public protocol ConfigFlagSettings {
 
 extension ConfigFlagSettings {
     @inlinable
-    public static var autoConfigPaths: [String] { [] }
+    public static var autoConfigPaths: [FilePath] { [] }
 
     @inlinable
     public static var autoConfig: String { "auto-config" }

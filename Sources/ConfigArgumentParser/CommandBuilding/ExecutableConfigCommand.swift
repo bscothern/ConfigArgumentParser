@@ -8,6 +8,7 @@
 
 import ArgumentParser
 import Foundation
+import SystemPackage
 
 /// The pointer which will be allocated and hold the additional help messaging if a help command is run.
 var executableConfigCommandHelpContext: UnsafeMutablePointer<ExecutableConfigCommandHelpContext>!
@@ -66,7 +67,7 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
             }
             try run(with: contents)
         } else if self.autoConfig {
-            guard let config = Flags.autoConfigPaths.lazy.compactMap({ (file: String) -> (file: String, contents: String)? in
+            guard let config = Flags.autoConfigPaths.lazy.map(\.string).compactMap({ (file: String) -> (file: String, contents: String)? in
                 var filePath = file
 
                 // String.init(contentsOfFile:) doens't work with a path using ~ for home so replace it by looking it up before trying this config file path.
@@ -80,7 +81,9 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
                 }
                 return (file, contents)
             }).first else {
-                Self.exit(withError: ConfigArgumentParserError.noConfigFilesInAutoPaths(Flags.autoConfigPaths))
+                print(Flags.autoConfigPaths)
+                print(Flags.autoConfigPaths.map(\.string))
+                Self.exit(withError: ConfigArgumentParserError.noConfigFilesInAutoPaths(Flags.autoConfigPaths.map(\.string)))
             }
 
             if showAutoConfigFile {
