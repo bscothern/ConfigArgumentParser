@@ -30,6 +30,7 @@ let package = Package(
             name: "ConfigArgumentParserTests",
             dependencies: [
                 .target(name: "ConfigArgumentParser"),
+                .product(name: "SystemPackage", package: "swift-system"),
             ]
         ),
     ]

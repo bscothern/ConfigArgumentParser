@@ -1,5 +1,6 @@
-@testable import ConfigArgumentParser
+import ConfigArgumentParser
 import Foundation
+import SystemPackage
 import XCTest
 
 /// This defines all test cases found in the Examples/Package.swift that should be run and tested with other arguments and configurations.
@@ -70,8 +71,7 @@ struct SimpleExampleTestCase: ExampleTestCase {
 }
 
 final class ConfigArgumentParserExamplesTests: XCTestCase {
-    static let packageRoot = "/" + #file.split(separator: "/").dropLast(3).joined(separator: "/") + "/"
-    static let namesPath = packageRoot + "Examples/Names.txt"
+    static let packageRoot = FilePath("/" + #file.split(separator: "/").dropLast(3).joined(separator: "/") + "/")
 
     var originalDirectory: String = ""
 
@@ -98,9 +98,13 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
 
     func simpleShell(_ command: String) throws -> Int32 {
         print("command: \(command)")
+        #if !os(Windows)
         let process = Process()
         process.executableURL = .init(fileURLWithPath: "/usr/bin/env")
         process.arguments = command.lazy.split(separator: " ").map(String.init)
+        #else
+        #endif
+        
         try process.run()
         process.waitUntilExit()
         return process.terminationStatus
@@ -115,7 +119,7 @@ extension ConfigArgumentParserExamplesTests {
     }
 
     func moveToExamplesDirectory(currentExample: ExampleTestCase) throws {
-        guard FileManager.default.changeCurrentDirectoryPath(ConfigArgumentParserExamplesTests.packageRoot) else {
+        guard FileManager.default.changeCurrentDirectoryPath(ConfigArgumentParserExamplesTests.packageRoot.string) else {
             XCTFail("Unable to move to package root. Cannot build and test \(currentExample.name).")
             return
         }
@@ -135,22 +139,22 @@ extension ConfigArgumentParserExamplesTests {
         print()
     }
 
-    func configFilePaths(for example: DetailedExampleTestCase) throws -> (good: String, bad: String) {
-        let exampleDirectory = Self.packageRoot + "Examples/Sources/" + example.name
-        return (exampleDirectory + "/config_good", exampleDirectory + "/config_bad")
+    func configFilePaths(for example: DetailedExampleTestCase) throws -> (good: FilePath, bad: FilePath) {
+        let exampleDirectory = Self.packageRoot.appending("Examples/Sources/" + example.name)
+        return (exampleDirectory.appending("/config_good"), exampleDirectory.appending("/config_bad"))
     }
 
-    func swiftpmRun(example: DetailedExampleTestCase, configs: (good: String, bad: String)) throws {
+    func swiftpmRun(example: DetailedExampleTestCase, configs: (good: FilePath, bad: FilePath)) throws {
         try moveToExamplesDirectory(currentExample: example)
 
-        let dryRunGoodExitCode = try simpleShell("swift run \(example.name) --\(example.dryRun) --\(example.config) \(configs.good) \(example.arguments.joined(separator: " "))")
+        let dryRunGoodExitCode = try simpleShell("swift run \(example.name) --\(example.dryRun) --\(example.config) \(configs.good.string) \(example.arguments.joined(separator: " "))")
         XCTAssertEqual(dryRunGoodExitCode, 0, "Dry run with good config didn't end with exit code 0.")
-        let goodExitCode = try simpleShell("swift run \(example.name) --\(example.config) \(configs.good)")
+        let goodExitCode = try simpleShell("swift run \(example.name) --\(example.config) \(configs.good.string)")
         XCTAssertEqual(goodExitCode, 0, "Run with good config didn't end with exit code 0.")
 
-        let dryRunBadExitCode = try simpleShell("swift run \(example.name) --\(example.dryRun) --\(example.config) \(configs.bad) \(example.arguments.joined(separator: " "))")
+        let dryRunBadExitCode = try simpleShell("swift run \(example.name) --\(example.dryRun) --\(example.config) \(configs.bad.string) \(example.arguments.joined(separator: " "))")
         XCTAssertEqual(dryRunBadExitCode, 0, "Dry run with bad config didn't end with exit code 0.")
-        let badExitCode = try simpleShell("swift run \(example.name) --\(example.config) \(configs.bad)")
+        let badExitCode = try simpleShell("swift run \(example.name) --\(example.config) \(configs.bad.string)")
         XCTAssertNotEqual(badExitCode, 0, "Run with bad config ended with exit code 0.")
     }
 }
