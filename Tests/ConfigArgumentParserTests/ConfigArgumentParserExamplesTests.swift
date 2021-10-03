@@ -106,7 +106,7 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
         #else
         // TODO: Figure out how to get this path in a better way.
         process.executableURL = .init(fileURLWithPath: FilePath(#"C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin\swift"#).string)
-        process.arguments = command.lazy.dropFirst().split(separator: " ").map(String.init)
+        process.arguments = command.lazy.split(separator: " ").dropFirst().map(String.init)
         #endif
 
         try process.run()
