@@ -71,7 +71,14 @@ struct SimpleExampleTestCase: ExampleTestCase {
 }
 
 final class ConfigArgumentParserExamplesTests: XCTestCase {
-    static let packageRoot = FilePath("/" + #file.split(separator: "/").dropLast(3).joined(separator: "/") + "/")
+    static let packageRoot: FilePath = {
+        var packageRoot = FilePath(#file)
+        print(#file)
+        for _ in 0..<3 {
+            packageRoot.removeLastComponent()
+        }
+        return packageRoot
+    }()
 
     var originalDirectory: String = ""
 
