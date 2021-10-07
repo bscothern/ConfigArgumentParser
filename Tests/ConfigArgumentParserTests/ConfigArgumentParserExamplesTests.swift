@@ -93,7 +93,7 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
         process.waitUntilExit()
         
         // Windows uses UTF16
-        let outputData = outputPipe.fileHandleForReading.availableData
+        let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
         let outputString = String(data: outputData, encoding: .utf16) ?? ""
         print(outputString)
         let swiftPath = FilePath(outputString)
@@ -129,7 +129,7 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
         print("command: \(command)")
         let process = Process()
         #if os(Windows)
-        process.executableURL = .init(fileURLWithPath: swiftPath.string)
+        process.executableURL = .init(fileURLWithPath: ConfigArgumentParserExamplesTests.swiftPath.string)
         process.arguments = ["help"] // command.lazy.split(separator: " ").dropFirst().map(String.init)
         #else
         process.executableURL = .init(fileURLWithPath: "/usr/bin/env")
