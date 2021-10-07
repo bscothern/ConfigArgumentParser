@@ -79,7 +79,7 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
         return packageRoot
     }()
     
-    #if os(Windows)
+//    #if os(Windows)
     static let swiftPath: FilePath = {
         let process = Process()
         let outputPipe = Pipe()
@@ -94,13 +94,21 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
 
         // Windows uses UTF16
         let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
-        let outputString = String(data: outputData, encoding: .utf8) ?? ""
-        print(outputString)
+        var outputString = outputData.withUnsafeBytes { outputDataBytes in
+            String(platformString: outputDataBytes.bindMemory(to: CInterop.PlatformChar.self).baseAddress!)
+        }
+        
+        print("Original", outputString)
+        while outputString.last == "\n" || outputString.last == "\r" {
+            outputString.removeLast()
+        }
+        
+        print("Cleaned", outputString)
         let swiftPath = FilePath(outputString)
         print(swiftPath)
         return swiftPath
     }()
-    #endif
+//    #endif
 
     var originalDirectory: String = ""
 
