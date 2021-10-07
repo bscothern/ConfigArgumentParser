@@ -78,7 +78,7 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
         }
         print(#file)
         print(packageRoot.string)
-        print((try? FileManager.default.contentsOfDirectory(atPath: packageRoot.string)) ?? [])
+        print(try! FileManager.default.contentsOfDirectory(atPath: packageRoot.string))
         return packageRoot
     }()
 
@@ -127,6 +127,7 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
 extension ConfigArgumentParserExamplesTests {
     func swiftpmBuild(example: ExampleTestCase) throws {
         try moveToExamplesDirectory(currentExample: example)
+        print(try! FileManager.default.contentsOfDirectory(atPath: FileManager.default.currentDirectoryPath))
         let buildExitCode = try simpleShell("swift build --product \(example.name)")
         XCTAssertEqual(buildExitCode, 0, "Build didn't end with exit code 0.")
     }
