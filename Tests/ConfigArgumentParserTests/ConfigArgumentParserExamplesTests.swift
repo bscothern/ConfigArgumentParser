@@ -73,10 +73,16 @@ struct SimpleExampleTestCase: ExampleTestCase {
 final class ConfigArgumentParserExamplesTests: XCTestCase {
     static let packageRoot: FilePath = {
         var packageRoot = FilePath(#file)
+        #if os(Windows)
+        let popCount: Int = 4
+        #else
+        let popCount: Int = 3
+        #endif
         print(#file)
-        for _ in 0..<3 {
+        for _ in 0..<popCount {
             packageRoot.removeLastComponent()
         }
+        print(packageRoot.string)
         return packageRoot
     }()
 
