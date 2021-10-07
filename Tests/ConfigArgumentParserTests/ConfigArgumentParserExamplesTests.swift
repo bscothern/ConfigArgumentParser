@@ -76,9 +76,6 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
         for _ in 0..<3 {
             packageRoot.removeLastComponent()
         }
-        print(#file)
-        print(packageRoot.string)
-        print(try! FileManager.default.contentsOfDirectory(atPath: packageRoot.string))
         return packageRoot
     }()
 
@@ -109,7 +106,6 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
         print("command: \(command)")
         let process = Process()
         #if !os(Windows)
-
         process.executableURL = .init(fileURLWithPath: "/usr/bin/env")
         process.arguments = command.lazy.split(separator: " ").map(String.init)
         #else
@@ -117,7 +113,7 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
         process.executableURL = .init(fileURLWithPath: FilePath(#"C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin\swift"#).string)
         process.environment = ProcessInfo.processInfo.environment
         process.currentDirectoryURL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-        process.arguments = command.lazy.split(separator: " ").dropFirst().map(String.init)
+        process.arguments = ["help"] // command.lazy.split(separator: " ").dropFirst().map(String.init)
         #endif
 
         try process.run()
@@ -129,7 +125,6 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
 extension ConfigArgumentParserExamplesTests {
     func swiftpmBuild(example: ExampleTestCase) throws {
         try moveToExamplesDirectory(currentExample: example)
-        print(try! FileManager.default.contentsOfDirectory(atPath: FileManager.default.currentDirectoryPath))
         let buildExitCode = try simpleShell("swift build --product \(example.name)")
         XCTAssertEqual(buildExitCode, 0, "Build didn't end with exit code 0.")
     }
