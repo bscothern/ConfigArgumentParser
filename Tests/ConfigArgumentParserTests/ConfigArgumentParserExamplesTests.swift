@@ -97,10 +97,7 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
         var outputString = String(data: outputData, encoding: .utf8) ?? ""
 
         print("Original", outputString)
-        while outputString.last == "\n" || outputString.last == "\r" {
-            outputString.removeLast()
-        }
-        
+        outputString = outputString.components(separatedBy: .newlines).lazy.filter { !$0.isEmpty }.first ?? ""
         print("Cleaned", outputString)
         let swiftPath = FilePath(outputString)
         print(swiftPath)
