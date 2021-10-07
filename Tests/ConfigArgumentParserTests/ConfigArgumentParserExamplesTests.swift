@@ -78,6 +78,7 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
         }
         print(#file)
         print(packageRoot.string)
+        print((try? FileManager.default.contentsOfDirectory(atPath: packageRoot.string)) ?? [])
         return packageRoot
     }()
 
