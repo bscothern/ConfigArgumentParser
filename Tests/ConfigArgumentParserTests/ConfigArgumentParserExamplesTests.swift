@@ -109,12 +109,13 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
         print("command: \(command)")
         let process = Process()
         #if !os(Windows)
-        
+
         process.executableURL = .init(fileURLWithPath: "/usr/bin/env")
         process.arguments = command.lazy.split(separator: " ").map(String.init)
         #else
         // TODO: Figure out how to get this path in a better way.
         process.executableURL = .init(fileURLWithPath: FilePath(#"C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin\swift"#).string)
+        process.environment = ProcessInfo.processInfo.environment
         process.arguments = command.lazy.split(separator: " ").dropFirst().map(String.init)
         #endif
 
