@@ -110,9 +110,8 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
         process.arguments = command.lazy.split(separator: " ").map(String.init)
         #else
         // TODO: Figure out how to get this path in a better way.
+        print(try! FileManager.default.contents(atPath: #"C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin"#))
         process.executableURL = .init(fileURLWithPath: FilePath(#"C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin\swift"#).string)
-        process.environment = ProcessInfo.processInfo.environment
-        process.currentDirectoryURL = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
         process.arguments = ["help"] // command.lazy.split(separator: " ").dropFirst().map(String.init)
         #endif
 
