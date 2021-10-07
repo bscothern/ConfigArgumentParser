@@ -86,15 +86,15 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
         let whereURL = URL(fileURLWithPath: #"C:\Windows\System32\where.exe"#)
 
         process.executableURL = whereURL
-        process.arguments = ["swift-build"]
+        process.arguments = ["swift"]
         process.standardOutput = outputPipe
 
         try! process.run()
         process.waitUntilExit()
-        
+
         // Windows uses UTF16
         let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
-        let outputString = String(data: outputData, encoding: .utf16) ?? ""
+        let outputString = String(data: outputData, encoding: .utf8) ?? ""
         print(outputString)
         let swiftPath = FilePath(outputString)
         print(swiftPath)
