@@ -18,6 +18,6 @@ jobs:
           tag: 5.5-RELEASE
 
       - uses: actions/checkout@v2
-      - run: swift build
+#      - run: swift build
       - run: swift test
 
