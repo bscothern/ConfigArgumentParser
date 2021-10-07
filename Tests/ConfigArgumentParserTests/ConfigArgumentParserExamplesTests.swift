@@ -92,12 +92,10 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
         try! process.run()
         process.waitUntilExit()
 
-        // Windows uses UTF16
+        // Windows uses UTF16 normally but when we run the where command it gives us back UTF8, windows is weird... ¯\_(ツ)_/¯
         let outputData = outputPipe.fileHandleForReading.readDataToEndOfFile()
-        var outputString = outputData.withUnsafeBytes { outputDataBytes in
-            String(platformString: outputDataBytes.bindMemory(to: CInterop.PlatformChar.self).baseAddress!)
-        }
-        
+        var outputString = String(data: outputData, encoding: .utf8) ?? ""
+
         print("Original", outputString)
         while outputString.last == "\n" || outputString.last == "\r" {
             outputString.removeLast()
