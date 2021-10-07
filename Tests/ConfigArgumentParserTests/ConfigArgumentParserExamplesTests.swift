@@ -78,6 +78,29 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
         }
         return packageRoot
     }()
+    
+    #if os(Windows)
+    static let swiftPath: FilePath = {
+        let process = Process()
+        let outputPipe = Pipe()
+        let whereURL = URL(fileURLWithPath: #"C:\Windows\System32\where.exe"#)
+
+        process.executableURL = whereURL
+        process.arguments = ["swift-build"]
+        process.standardOutput = outputPipe
+
+        try! process.run()
+        process.waitUntilExit()
+        
+        // Windows uses UTF16
+        let outputData = outputPipe.fileHandleForReading.availableData
+        let outputString = String(data: outputData, encoding: .utf16) ?? ""
+        print(outputString)
+        let swiftPath = FilePath(outputString)
+        print(swiftPath)
+        return swiftPath
+    }()
+    #endif
 
     var originalDirectory: String = ""
 
@@ -105,14 +128,12 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
     func simpleShell(_ command: String) throws -> Int32 {
         print("command: \(command)")
         let process = Process()
-        #if !os(Windows)
+        #if os(Windows)
+        process.executableURL = .init(fileURLWithPath: swiftPath.string)
+        process.arguments = ["help"] // command.lazy.split(separator: " ").dropFirst().map(String.init)
+        #else
         process.executableURL = .init(fileURLWithPath: "/usr/bin/env")
         process.arguments = command.lazy.split(separator: " ").map(String.init)
-        #else
-        // TODO: Figure out how to get this path in a better way.
-        print(try! FileManager.default.contents(atPath: #"C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin"#))
-        process.executableURL = .init(fileURLWithPath: FilePath(#"C:\Library\Developer\Toolchains\unknown-Asserts-development.xctoolchain\usr\bin\swift"#).string)
-        process.arguments = ["help"] // command.lazy.split(separator: " ").dropFirst().map(String.init)
         #endif
 
         try process.run()
