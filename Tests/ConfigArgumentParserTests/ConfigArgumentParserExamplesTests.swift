@@ -73,15 +73,10 @@ struct SimpleExampleTestCase: ExampleTestCase {
 final class ConfigArgumentParserExamplesTests: XCTestCase {
     static let packageRoot: FilePath = {
         var packageRoot = FilePath(#file)
-        #if os(Windows)
-        let popCount: Int = 4
-        #else
-        let popCount: Int = 3
-        #endif
-        print(#file)
-        for _ in 0..<popCount {
+        for _ in 0..<3 {
             packageRoot.removeLastComponent()
         }
+        print(#file)
         print(packageRoot.string)
         return packageRoot
     }()
@@ -136,12 +131,8 @@ extension ConfigArgumentParserExamplesTests {
     }
 
     func moveToExamplesDirectory(currentExample: ExampleTestCase) throws {
-        guard FileManager.default.changeCurrentDirectoryPath(ConfigArgumentParserExamplesTests.packageRoot.string) else {
-            XCTFail("Unable to move to package root. Cannot build and test \(currentExample.name).")
-            return
-        }
-        guard FileManager.default.changeCurrentDirectoryPath("./Examples") else {
-            XCTFail("Unable to move into ./Examples from package root. Cannot build and test \(currentExample.name).")
+        guard FileManager.default.changeCurrentDirectoryPath(ConfigArgumentParserExamplesTests.packageRoot.appending("/Examples").string) else {
+            XCTFail("Unable to move to Examples directory. Cannot build and test \(currentExample.name).")
             return
         }
     }
