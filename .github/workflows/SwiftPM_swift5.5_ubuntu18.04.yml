@@ -1,4 +1,4 @@
-name: SwiftPM (Swift 5.5 & Ubuntu 20.04)
+name: SwiftPM (Swift 5.5 & Ubuntu 18.04)
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - '*'
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
       - name: Build
