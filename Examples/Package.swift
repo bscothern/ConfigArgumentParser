@@ -5,15 +5,17 @@ import PackageDescription
 
 /// The names of the example projects to make with default settings
 let names = [
-    "ExampleDefault",
-    "ExampleCustomFlags1",
-    "ExampleCustomFlags2",
-    "ExampleCustomFlags3",
-    "ExampleNewLineConfigFileInterpreter",
-    "ExampleOptionPerLineConfigArgumentInterpreter",
-    "ExampleSpaceConfigFileInterpreter",
-    "ExampleAllCustom",
-    "ExampleCLIOverride",
+    "example-default",
+    "example-custom-flags1",
+    "example-custom-flags2",
+    "example-custom-flags3",
+    "example-new-line-config-file-interpreter",
+    "example-option-per-line-config-argument-interpreter",
+    "example-space-config-file-interpreter",
+    "example-all-custom",
+    "example-auto-config-good",
+    "example-auto-config-bad",
+//    "example-cli-override", //(WIP)
 ]
 
 let products = names.map { name -> Product in
@@ -28,17 +30,20 @@ let targets = names.map { name -> Target in
         name: name,
         dependencies: [
             .product(name: "ArgumentParser", package: "swift-argument-parser"),
-            .product(name: "ConfigArgumentParser", package: "ConfigArgumentParser"),
+            .product(name: "ConfigArgumentParser", package: "ConfigArgumentParser")
         ]
     )
 }
 
 let package = Package(
     name: "ConfigArgumentParserExamples",
+    platforms: [
+        .macOS(.v10_12)
+    ],
     products: products,
      dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser.git", .upToNextMinor(from: "0.3.1")),
         .package(name: "ConfigArgumentParser", path: ".."),
+        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.0.1")
      ],
      targets: targets
 )

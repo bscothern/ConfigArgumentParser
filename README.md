@@ -4,7 +4,13 @@ An extension of the [swift argument parser](https://github.com/apple/swift-argum
 
 ![GitHub license](https://img.shields.io/badge/license-MIT-lightgrey.svg)
 ![SwiftPM](https://img.shields.io/badge/SwiftPM-compatible-brightgreen.svg)
-![Swift Versions](https://img.shields.io/badge/Swift-5.2,_5.3-orange.svg)
+![Swift Versions](https://img.shields.io/badge/Swift-5.2+-orange.svg)
+
+## Supported Features
+* Custom Config File Formats.
+* Customizable Flags/Help Messages.
+* Dry runs to show what commands will be run with the config file being used.
+* The ability to auto find and use config files at paths of your choosing.
 
 ## Usage
 You should be familiar with at least the basics of the [swift argument parser](https://github.com/apple/swift-argument-parser) which this extends.
@@ -55,5 +61,5 @@ Breaking changes will happen on minor versions until version `1.0.0` is reached.
 ## Known Issues
 * Because of how `ConfigArgumentParser` has to function to allow normal usage of your commands and the config options you can't have any auto complete help with supplying the arguments it supports.
 * No way to automatically grab and run config file when running executables.
-* You cannot override config settings from the command line
+* You cannot override config settings from the command line.
 * You cannot add aditional settings from the command line when a config file is used.

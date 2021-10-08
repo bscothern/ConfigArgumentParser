@@ -3,6 +3,10 @@ included:
     - ./Tests
     - ./Examples
 
+excluded:
+    - ./.build
+    - ./Examples/.build
+
 opt_in_rules:
     - anyobject_protocol
     - array_init

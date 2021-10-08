@@ -3,7 +3,7 @@
 //  ConfigArgumentParser
 //
 //  Created by Braden Scothern on 9/10/20.
-//  Copyright © 2020 Braden Scothern. All rights reserved.
+//  Copyright © 2020-2021 Braden Scothern. All rights reserved.
 //
 
 import ArgumentParser
@@ -46,7 +46,7 @@ extension ConfigExecutable: ConfigFlagCustomizable {
 extension ConfigExecutable: ExecutableEntryPoint {
     @inlinable
     public static func main() {
-        Self.customizeFlags(with: DefaultConfigFlagSettings.self)
+        Self.customizeFlags(with: DefaultConfigFlagSettings<RootCommand>.self)
             .main()
     }
 }

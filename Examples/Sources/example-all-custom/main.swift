@@ -25,6 +25,8 @@ struct ExampleAllCustom: ParsableCommand {
 }
 
 enum CommaSeperatedConfigFileInterpreter: ConfigFileInterpreter {
+    static var configFileHelp: String { "\(#function) help "}
+
     static func convertToArguments(configFileContents: String) -> [ConfigArgument] {
         configFileContents
             .split(separator: ",")
@@ -33,6 +35,12 @@ enum CommaSeperatedConfigFileInterpreter: ConfigFileInterpreter {
 }
 
 enum FooBarFlagSettings: ConfigFlagSettings {
+    @usableFromInline
+    static var autoConfigPaths: [String] {
+        [
+            "./\(ExampleAllCustom._commandName).config"
+        ]
+    }
     static var config: String { "foo" }
     static var dryRun: String { "bar" }
 }

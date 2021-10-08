@@ -3,7 +3,7 @@
 //  ConfigArgumentParser
 //
 //  Created by Braden Scothern on 9/12/20.
-//  Copyright © 2020 Braden Scothern. All rights reserved.
+//  Copyright © 2020-2021 Braden Scothern. All rights reserved.
 //
 
 /// A type that can still set the `ConfigFlagSettings` to use when running the command.
