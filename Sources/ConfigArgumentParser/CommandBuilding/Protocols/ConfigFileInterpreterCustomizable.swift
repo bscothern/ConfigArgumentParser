@@ -11,6 +11,6 @@ public protocol ConfigFileInterpreterCustomizable {
     /// Sets the `ConfigFileInterpreter` of the command.
     ///
     /// - Parameter interpreter: The `ConfigFileInterpreter.Type` to use when interpreting config files with the resulting `ExecutableEntryPoint`.
-    /// - Returns: A `ExecutableEntryPoint.Type` that can be started or further customized via its conformance to `ConfigFlagCustomizable`.
-    static func interpretConfig(with interpreter: ConfigFileInterpreter.Type) -> (ConfigFlagCustomizable & ExecutableEntryPoint).Type
+    /// - Returns: A `ExecutableEntryPoint.Type` that can be started or further customized via its conformance to `ConfigOptionsCustomizable`.
+    static func interpretConfig(with interpreter: ConfigFileInterpreter.Type) -> (ConfigOptionsCustomizable & ExecutableEntryPoint).Type
 }

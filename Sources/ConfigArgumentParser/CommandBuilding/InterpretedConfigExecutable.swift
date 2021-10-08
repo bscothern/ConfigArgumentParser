@@ -11,17 +11,17 @@ import ArgumentParser
 @usableFromInline
 enum InterpretedConfigExecutable<RootCommand, Interpreter> where RootCommand: ParsableCommand, Interpreter: ConfigFileInterpreter {}
 
-extension InterpretedConfigExecutable: ConfigFlagCustomizable {
+extension InterpretedConfigExecutable: ConfigOptionsCustomizable {
     @usableFromInline
-    static func customizeFlags(with flagSettings: ConfigFlagSettings.Type) -> ExecutableEntryPoint.Type {
-        flagSettings.bind(to: RootCommand.self, Interpreter.self)
+    static func customizeOptions(with customizeOptions: ConfigOptionsSettings.Type) -> ExecutableEntryPoint.Type {
+        customizeOptions.bind(to: RootCommand.self, Interpreter.self)
     }
 }
 
 extension InterpretedConfigExecutable: ExecutableEntryPoint {
     @usableFromInline
     static func main() {
-        Self.customizeFlags(with: DefaultConfigFlagSettings<RootCommand>.self)
+        Self.customizeOptions(with: DefaultConfigOptionsSettings<RootCommand>.self)
             .main()
     }
 }

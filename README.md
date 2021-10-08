@@ -8,7 +8,7 @@ An extension of the [swift argument parser](https://github.com/apple/swift-argum
 
 ## Supported Features
 * Custom Config File Formats.
-* Customizable Flags/Help Messages.
+* Customizable Options/Help Messages.
 * Dry runs to show what commands will be run with the config file being used.
 * The ability to auto find and use config files at paths of your choosing.
 
@@ -18,7 +18,7 @@ Build up your command line executable as you normally would when working with th
 
 The type that enables the use of config files is `ConfigExecutable<RootCommand>`.
 The `RootCommand` is your executable command type that you would normally call `RootCommand.main()` on.
-With your `ConfigExecutable` you can then build up your command and customize how the config file is interpreted or what flags are used to supply a config file as needed.
+With your `ConfigExecutable` you can then build up your command and customize how the config file is interpreted or what options are used to supply a config file as needed.
 
 ### The simple case
 In the most simple case this is all you need:
@@ -34,12 +34,12 @@ ConfigExecutable<YourCommand>
     .main()
 ```
 
-### Customizing the flags
-When the default flags of `--config [config_file_path]` and `--config-dry-run` aren't what you want you can create a `ConfigFlagSettings` type and use `customizeFlags(with:)` to change them as needed like this:
+### Customizing the options
+When the default options of `--config [config_file_path]` and `--config-dry-run` aren't what you want you can create a `ConfigOptionsSettings` type and use `customizeOptions(with:)` to change them as needed like this:
 ```swift
 ConfigExecutable<YourCommand>
     .interpretConfig(with: YourConfigFileInterpreter.self) // If desired, this is not required
-    .customizeFlags(with: YourConfigFlagSettings.self)
+    .customizeOptions(with: YourConfigOptionsSettings.self)
     .main()
 ```
 

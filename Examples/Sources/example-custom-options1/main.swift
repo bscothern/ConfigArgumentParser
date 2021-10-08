@@ -9,21 +9,21 @@
 import ArgumentParser
 import ConfigArgumentParser
 
-struct ExampleCustomFlags1: ParsableCommand {
+struct ExampleCustomOptions1: ParsableCommand {
     @Argument
     var values: [Int]
 
     mutating func run() {
-        print("=== ExampleCustomFlags1 ===")
+        print("=== ExampleCustomOptions1 ===")
         print(values)
     }
 }
 
-enum CustomFlagSettings: ConfigFlagSettings {
+enum CustomOptionsSettings: ConfigOptionsSettings {
     static var config: String { "test-custom-config" }
     static var dryRun: String { "test-custom-dry-run" }
 }
 
-ConfigExecutable<ExampleCustomFlags1>
-    .customizeFlags(with: CustomFlagSettings.self)
+ConfigExecutable<ExampleCustomOptions1>
+    .customizeOptions(with: CustomOptionsSettings.self)
     .main()

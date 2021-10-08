@@ -1,5 +1,5 @@
 //
-//  DefaultConfigFlagSettings.swift
+//  DefaultConfigOptionsSettings.swift
 //  ConfigArgumentParser
 //
 //  Created by Braden Scothern on 9/10/20.
@@ -10,7 +10,7 @@ import ArgumentParser
 import SystemPackage
 
 @usableFromInline
-enum DefaultConfigFlagSettings<RootCommand>: ConfigFlagSettings where RootCommand: ParsableCommand {
+enum DefaultConfigOptionsSettings<RootCommand>: ConfigOptionsSettings where RootCommand: ParsableCommand {
     @usableFromInline
     static var autoConfigPaths: [FilePath] {
         [

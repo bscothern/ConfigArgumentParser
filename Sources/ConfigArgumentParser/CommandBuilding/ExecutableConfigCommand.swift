@@ -19,42 +19,42 @@ struct ExecutableConfigCommandHelpContext {
 
 /// The `ParsableCommand` that attempts to interpret a given config file and run the provided command.
 @usableFromInline
-struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand, ExecutableEntryPoint where RootCommand: ParsableCommand, Flags: ConfigFlagSettings, Interpreter: ConfigFileInterpreter {
+struct ExecutableConfigCommand<RootCommand, Interpreter, Options>: ParsableCommand, ExecutableEntryPoint where RootCommand: ParsableCommand, Options: ConfigOptionsSettings, Interpreter: ConfigFileInterpreter {
     @usableFromInline
     @Flag(
-        name: .customLong(Flags.autoConfig),
-        help: ArgumentHelp(Flags.autoConfigHelp)
+        name: .customLong(Options.autoConfig),
+        help: ArgumentHelp(Options.autoConfigHelp)
     )
     var autoConfig = false
 
     @usableFromInline
     @Flag(
-        name: .customLong(Flags.showAutoConfigFile),
-        help: ArgumentHelp(Flags.showAutoConfigFileHelp)
+        name: .customLong(Options.showAutoConfigFile),
+        help: ArgumentHelp(Options.showAutoConfigFileHelp)
     )
     var showAutoConfigFile = false
 
     @usableFromInline
     @Flag(
-        name: .customLong(Flags.findAutoConfigFile),
-        help: ArgumentHelp(Flags.findAutoConfigFileHelp)
+        name: .customLong(Options.findAutoConfigFile),
+        help: ArgumentHelp(Options.findAutoConfigFileHelp)
     )
     var findAutoConfigFile = false
 
     @usableFromInline
     @Option(
-        name: .customLong(Flags.config),
-        help: ArgumentHelp(Flags.configHelp),
+        name: .customLong(Options.config),
+        help: ArgumentHelp(Options.configHelp),
         completion: CompletionKind.file()
     )
     var _configFile: String?
-    
+
     var configFile: FilePath?
 
     @usableFromInline
     @Flag(
-        name: .customLong(Flags.dryRun),
-        help: ArgumentHelp(Flags.dryRunHelp)
+        name: .customLong(Options.dryRun),
+        help: ArgumentHelp(Options.dryRunHelp)
     )
     var dryRun = false
 
@@ -69,7 +69,7 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
             }
             try run(with: contents)
         } else if self.autoConfig {
-            guard let config = Flags.autoConfigPaths.lazy.map(\.string).compactMap({ (file: String) -> (file: String, contents: String)? in
+            guard let config = Options.autoConfigPaths.lazy.map(\.string).compactMap({ (file: String) -> (file: String, contents: String)? in
                 var filePath = file
 
                 // String.init(contentsOfFile:) doens't work with a path using ~ for home so replace it by looking it up before trying this config file path.
@@ -83,9 +83,9 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
                 }
                 return (file, contents)
             }).first else {
-                print(Flags.autoConfigPaths)
-                print(Flags.autoConfigPaths.map(\.string))
-                Self.exit(withError: ConfigArgumentParserError.noConfigFilesInAutoPaths(Flags.autoConfigPaths.map(\.string)))
+                print(Options.autoConfigPaths)
+                print(Options.autoConfigPaths.map(\.string))
+                Self.exit(withError: ConfigArgumentParserError.noConfigFilesInAutoPaths(Options.autoConfigPaths.map(\.string)))
             }
 
             if showAutoConfigFile {
@@ -139,7 +139,7 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
             self.autoConfig = true
             self.showAutoConfigFile = true
         }
-        
+
         configFile = _configFile.map(FilePath.init(_:))
     }
 
@@ -176,31 +176,31 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
 
         var message = ""
 
-        if !Flags.autoConfigPaths.isEmpty {
-            var autoConfigHelp = "  --\(Flags.autoConfig)"
+        if !Options.autoConfigPaths.isEmpty {
+            var autoConfigHelp = "  --\(Options.autoConfig)"
             makeHelpProperLength(&autoConfigHelp)
-            autoConfigHelp += Flags.autoConfigHelp
+            autoConfigHelp += Options.autoConfigHelp
             message += "\n\(autoConfigHelp)"
 
-            var showAutoConfigFileHelp = "  --\(Flags.showAutoConfigFile)"
+            var showAutoConfigFileHelp = "  --\(Options.showAutoConfigFile)"
             makeHelpProperLength(&showAutoConfigFileHelp)
-            showAutoConfigFileHelp += Flags.showAutoConfigFileHelp
+            showAutoConfigFileHelp += Options.showAutoConfigFileHelp
             message += "\n\(showAutoConfigFileHelp)"
 
-            var findAutoConfigFileHelp = "  --\(Flags.findAutoConfigFile)"
+            var findAutoConfigFileHelp = "  --\(Options.findAutoConfigFile)"
             makeHelpProperLength(&findAutoConfigFileHelp)
-            findAutoConfigFileHelp += Flags.findAutoConfigFileHelp
+            findAutoConfigFileHelp += Options.findAutoConfigFileHelp
             message += "\n\(findAutoConfigFileHelp)"
         }
 
-        var configHelp = "  --\(Flags.config) <\(Flags.config)>"
+        var configHelp = "  --\(Options.config) <\(Options.config)>"
         makeHelpProperLength(&configHelp)
-        configHelp += "\(Flags.configHelp) \(Interpreter.configFileHelp)"
+        configHelp += "\(Options.configHelp) \(Interpreter.configFileHelp)"
         message += "\n\(configHelp)"
 
-        var dryRunHelp = "  --\(Flags.dryRun)"
+        var dryRunHelp = "  --\(Options.dryRun)"
         makeHelpProperLength(&dryRunHelp)
-        dryRunHelp += Flags.dryRunHelp
+        dryRunHelp += Options.dryRunHelp
         message += "\n\(dryRunHelp)"
 
         executableConfigCommandHelpContext = .allocate(capacity: 1)

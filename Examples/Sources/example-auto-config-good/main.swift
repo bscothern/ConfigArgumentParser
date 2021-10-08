@@ -20,7 +20,7 @@ struct ExampleAutoConfigGood: ParsableCommand {
     }
 }
 
-enum ExampleAutoConfigGoodFlagSettings: ConfigFlagSettings {
+enum ExampleAutoConfigGoodOptionsSettings: ConfigOptionsSettings {
     static var autoConfigPaths: [FilePath] {
         [
             .init("Sources/\(ExampleAutoConfigGood._commandName)/\(ExampleAutoConfigGood._commandName).config")
@@ -29,5 +29,5 @@ enum ExampleAutoConfigGoodFlagSettings: ConfigFlagSettings {
 }
 
 ConfigExecutable<ExampleAutoConfigGood>
-    .customizeFlags(with: ExampleAutoConfigGoodFlagSettings.self)
+    .customizeOptions(with: ExampleAutoConfigGoodOptionsSettings.self)
     .main()

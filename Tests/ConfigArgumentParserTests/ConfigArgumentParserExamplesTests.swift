@@ -8,10 +8,10 @@ let detailedExampleTestCases: [DetailedExampleTestCase] = [
     // Test defaults
     .init(name: "example-default"),
 
-    // Only change the custom flags
-    .init(name: "example-custom-flags1", config: "test-custom-config", dryRun: "test-custom-dry-run"),
-    .init(name: "example-custom-flags2", config: "test-custom-config"),
-    .init(name: "example-custom-flags3", dryRun: "test-custom-config-dry-run"),
+    // Only change the custom options
+    .init(name: "example-custom-options1", config: "test-custom-config", dryRun: "test-custom-dry-run"),
+    .init(name: "example-custom-options2", config: "test-custom-config"),
+    .init(name: "example-custom-options3", dryRun: "test-custom-config-dry-run"),
 
     // Only changing the interpreter to the specified one
     .init(name: "example-new-line-config-file-interpreter"),
@@ -104,7 +104,7 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
         process.arguments = command.lazy.split(separator: " ").map(String.init)
         #else
         #endif
-        
+
         try process.run()
         process.waitUntilExit()
         return process.terminationStatus

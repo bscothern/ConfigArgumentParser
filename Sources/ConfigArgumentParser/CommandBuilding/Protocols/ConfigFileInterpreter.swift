@@ -41,7 +41,7 @@ extension ConfigFileInterpreter {
     /// - Parameter _: The type of the `RootCommand` to run from this Interpreter.
     /// - Returns: An Interpreter that has been bound to the provided `RootCommand`.
     @usableFromInline
-    static func bind<RootCommand>(to _: RootCommand.Type) -> (ConfigFlagCustomizable & ExecutableEntryPoint).Type where RootCommand: ParsableCommand {
+    static func bind<RootCommand>(to _: RootCommand.Type) -> (ConfigOptionsCustomizable & ExecutableEntryPoint).Type where RootCommand: ParsableCommand {
         InterpretedConfigExecutable<RootCommand, Self>.self
     }
 }

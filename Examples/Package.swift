@@ -6,9 +6,9 @@ import PackageDescription
 /// The names of the example projects to make with default settings
 let names = [
     "example-default",
-    "example-custom-flags1",
-    "example-custom-flags2",
-    "example-custom-flags3",
+    "example-custom-options1",
+    "example-custom-options2",
+    "example-custom-options3",
     "example-new-line-config-file-interpreter",
     "example-option-per-line-config-argument-interpreter",
     "example-space-config-file-interpreter",

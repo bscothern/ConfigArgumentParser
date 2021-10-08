@@ -34,7 +34,7 @@ enum CommaSeperatedConfigFileInterpreter: ConfigFileInterpreter {
     }
 }
 
-enum FooBarFlagSettings: ConfigFlagSettings {
+enum FooBarOptioinsSettings: ConfigOptionsSettings {
     @usableFromInline
     static var autoConfigPaths: [String] {
         [
@@ -47,5 +47,5 @@ enum FooBarFlagSettings: ConfigFlagSettings {
 
 ConfigExecutable<ExampleAllCustom>
     .interpretConfig(with: CommaSeperatedConfigFileInterpreter.self)
-    .customizeFlags(with: FooBarFlagSettings.self)
+    .customizeOptions(with: FooBarOptioinsSettings.self)
     .main()
