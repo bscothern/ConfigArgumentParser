@@ -78,7 +78,7 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
         }
         return packageRoot
     }()
-    
+
     #if os(Windows)
     static let swiftPath: FilePath = {
         let process = Process()
@@ -97,7 +97,7 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
         var outputString = String(data: outputData, encoding: .utf8) ?? ""
 
         outputString = outputString.components(separatedBy: .newlines).lazy.filter { !$0.isEmpty }.first ?? ""
-        return .init(outputString)
+        return FilePath(outputString).removingLastComponent()
     }()
     #endif
 
@@ -129,8 +129,8 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
         let process = Process()
         #if os(Windows)
         let command = command.lazy.split(separator: " ").map(String.init)
-        process.executableURL = .init(fileURLWithPath: ConfigArgumentParserExamplesTests.swiftPath.removingLastComponent().appending("swift-\(command[1]).exe").string)
-        process.arguments = ["help"] //Array(command.dropFirst(2))
+        process.executableURL = .init(fileURLWithPath: ConfigArgumentParserExamplesTests.swiftPath.appending("swift-\(command[1]).exe").string)
+        process.arguments = ["-help"] // Array(command.dropFirst(2))
         #else
         process.executableURL = .init(fileURLWithPath: "/usr/bin/env")
         process.arguments = command.lazy.split(separator: " ").map(String.init)

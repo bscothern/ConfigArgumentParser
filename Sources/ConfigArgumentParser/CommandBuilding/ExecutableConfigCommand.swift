@@ -48,7 +48,7 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
         completion: CompletionKind.file()
     )
     var _configFile: String?
-    
+
     var configFile: FilePath?
 
     @usableFromInline
@@ -139,7 +139,7 @@ struct ExecutableConfigCommand<RootCommand, Interpreter, Flags>: ParsableCommand
             self.autoConfig = true
             self.showAutoConfigFile = true
         }
-        
+
         configFile = _configFile.map(FilePath.init(_:))
     }
 
