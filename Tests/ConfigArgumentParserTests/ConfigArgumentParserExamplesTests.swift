@@ -128,8 +128,9 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
         print("command: \(command)")
         let process = Process()
         #if os(Windows)
-        process.executableURL = .init(fileURLWithPath: ConfigArgumentParserExamplesTests.swiftPath.string)
-        process.arguments = ["help"] //command.lazy.split(separator: " ").dropFirst().map(String.init)
+        let command = command.lazy.split(separator: " ").map(String.init)
+        process.executableURL = .init(fileURLWithPath: ConfigArgumentParserExamplesTests.swiftPath.removingLastComponent().appending("swift-\(command[1]).exe").string)
+        process.arguments = ["help"] //Array(command.dropFirst(2))
         #else
         process.executableURL = .init(fileURLWithPath: "/usr/bin/env")
         process.arguments = command.lazy.split(separator: " ").map(String.init)
