@@ -76,12 +76,14 @@ final class ConfigArgumentParserExamplesTests: XCTestCase {
     var originalDirectory: String = ""
 
     override func setUp() {
+        super.setUp()
         self.continueAfterFailure = false
         originalDirectory = FileManager.default.currentDirectoryPath
     }
 
     override func tearDown() {
-        if originalDirectory != "" {
+        super.tearDown()
+        if originalDirectory.isEmpty {
             FileManager.default.changeCurrentDirectoryPath(originalDirectory)
         }
     }
